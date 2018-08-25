@@ -106,8 +106,9 @@ var autoSpawning = {
             spawn.room.visual.text(
                 '🔄 ' + renewingCreepName,
                 spawn.pos.x + 1, 
-                spawn.pos.y, 
+                spawn.pos.y-1, 
                 {align: 'left', opacity: 0.8});
+            console.log('Renewing creep '+renewingCreepName);
             return -9999;
         }
         if(!spawn.spawning) {
@@ -146,7 +147,7 @@ var autoSpawning = {
                 
                 var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
             
-                if(Math.random()>0.9) if(upgraders.length < 6) {
+                if(Math.random()>0.9) if(upgraders.length < 8) {
                     var newName = 'Upgrader' + Game.time+'_'+spawn.name.substring(5);
                     if(spawn.spawnCreep(template['upgrader'], newName, 
                         {memory: {role: 'upgrader',behaviour:Math.round(Math.random())}})==OK){

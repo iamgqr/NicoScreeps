@@ -44,7 +44,7 @@ var roleSupporter = {
                 if(ret == ERR_NOT_IN_RANGE) {
                     var reuse=7;
                     if(creep.pos.inRangeTo(target,3)) reuse=0;
-                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'},reusePath:reuse,ignoreCreeps:true,plainCost:100,swampCost:100});
+                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'},reusePath:reuse,ignoreCreeps:false,plainCost:100,swampCost:100});
                 }
                 if(ret==OK&&!(creep.carry.energy<=target.energyCapacity-target.energy)){
                     var target=targets[1];
@@ -52,7 +52,7 @@ var roleSupporter = {
                     if(creep.pos.inRangeTo(target,1)) return;
                     var reuse=7;
                     if(creep.pos.inRangeTo(target,3)) reuse=0;
-                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'},reusePath:reuse,ignoreCreeps:true,plainCost:100,swampCost:100});
+                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'},reusePath:reuse,ignoreCreeps:false,plainCost:100,swampCost:100});
                 }
             }
             else{
@@ -62,7 +62,7 @@ var roleSupporter = {
 	    else {
             //console.log('QWQ'+creep.name);
 	        if(findEnergy.findEnergy(creep)==0){
-                creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'},ignoreCreeps:true,plainCost:100,swampCost:100});
+                creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'},ignoreCreeps:false,plainCost:100,swampCost:100});
 	        }
         }
         return 0;

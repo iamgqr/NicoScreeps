@@ -54,10 +54,10 @@ module.exports = {
                 }
 	        }
             else{
-                if(creep.carry.energy != creep.carryCapacity){
-                    creep.drop(RESOURCE_ENERGY);
-                    return;
-                }
+                // if(creep.carry.energy != creep.carryCapacity){
+                //     creep.working=false;
+                //     return;
+                // }
                 var reuse=10,ignore=true;
                 if(creep.room.name=='W42N33'||creep.pos.inRangeTo(ends[creep.memory.behaviour],5)) reuse=0,ignore=false;
                 creep.moveTo(ends[creep.memory.behaviour],{ignoreCreeps:ignore,reusePath:reuse,plainCost:100,swampCost:200});

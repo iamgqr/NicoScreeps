@@ -50,6 +50,10 @@ var roleRepairer= {
         var target=targets[0];
 	    if(creep.memory.working) {
 	        if(behaviourDistant){
+	            if(creep.room.name=='W42N33'){
+    	            creep.moveTo(creep.pos.findClosestByRange(FIND_EXIT_BOTTOM));
+	                return;
+	            }
                 if(!creep.memory.roomover&&Math.random()<0.003&&creep.room.name=='W42N32'){
     	            creep.moveTo(creep.pos.findClosestByRange(FIND_EXIT_RIGHT));
 	                creep.memory.roomover=true;
@@ -217,7 +221,6 @@ var roleRepairer= {
             */
 	    }
 	    else {
-	        if(autoRenew.autoRenew(creep)) return;
 	        if(behaviourDistant&&creep.room.name!='W42N33'){
 	            var container = creep.pos.findInRange(FIND_STRUCTURES,20,
                     {filter:object => (object.structureType==STRUCTURE_CONTAINER)&&object.store.energy>1000})[0];
@@ -252,6 +255,7 @@ var roleRepairer= {
 	                return;
 	            }
 	        }
+	        if(autoRenew.autoRenew(creep)) return;
             if(findEnergy.findEnergy(creep)==0){
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#00aaff'}});
             }
