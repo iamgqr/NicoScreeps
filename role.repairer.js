@@ -1,6 +1,7 @@
 const BEHAVIOUR_NEAREST=0;
 const BEHAVIOUR_FIRST=1;
 var findEnergy = require('function.findEnergy');
+var autoRenew = require('function.autoRenew');
 
 var roleRepairer= {
     /** @param {Creep} creep **/
@@ -59,14 +60,6 @@ var roleRepairer= {
 	                creep.memory.roomover=false;
 	                return;
 	            }
-	            if(creep.room.name=='W42N33'){
-	                creep.moveTo(22,49);
-	                return;
-	            }
-	            if(creep.room.name=='W42N32'&&creep.pos.y==0){
-	                creep.moveTo(22,1);
-	                return;
-	            }
 	            if(creep.memory.roomover&&creep.room.name=='W42N32'){
     	            creep.moveTo(creep.pos.findClosestByRange(FIND_EXIT_RIGHT));
 	                return;
@@ -75,19 +68,6 @@ var roleRepairer= {
     	            creep.moveTo(creep.pos.findClosestByRange(FIND_EXIT_LEFT));
 	                return;
 	            }
-	        }
-	        else if(Game.spawns['Spawn1'].memory.towerEnergyLow){
-    	        var towers = creep.room.find(FIND_MY_STRUCTURES, {
-                    filter: object => object.structureType==STRUCTURE_TOWER&&object.energy*4<object.energyCapacity*3
-                });
-                if(towers.length){
-                    if(creep.transfer(towers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(towers[0], {visualizePathStyle: {stroke: '#00aaff'}});
-                    }
-                }
-                return 0;
-    	    }
-	        if(behaviourDistant){
 	            const avoidRoads=function(){
                     var currRoad=_.filter(creep.pos.lookFor(LOOK_STRUCTURES),{structureType:STRUCTURE_ROAD});
                     if(currRoad.length>0){
@@ -200,6 +180,17 @@ var roleRepairer= {
                 return;
 	        }
 	        else {
+	            if(Game.spawns['Spawn1'].memory.towerEnergyLow){
+        	        var towers = creep.room.find(FIND_MY_STRUCTURES, {
+                        filter: object => object.structureType==STRUCTURE_TOWER&&object.energy*4<object.energyCapacity*3
+                    });
+                    if(towers.length){
+                        if(creep.transfer(towers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(towers[0], {visualizePathStyle: {stroke: '#00aaff'}});
+                        }
+                    }
+                return 0;
+	            }
                 if(target) {
                     if(creep.repair(target) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(target, {visualizePathStyle: {stroke: '#00aaff'}});
@@ -226,6 +217,7 @@ var roleRepairer= {
             */
 	    }
 	    else {
+	        if(autoRenew.autoRenew(creep)) return;
 	        if(behaviourDistant&&creep.room.name!='W42N33'){
 	            var container = creep.pos.findInRange(FIND_STRUCTURES,20,
                     {filter:object => (object.structureType==STRUCTURE_CONTAINER)&&object.store.energy>1000})[0];
