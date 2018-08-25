@@ -8,6 +8,7 @@ const ends=[
     '5b7d7dd63d193b0277cc1af4',
     '5b7d7dd63d193b0277cc1af4',
 ];
+var autoRenew = require('function.autoRenew');
 
 var roleCarrier = {
     run:function(creep){
@@ -36,6 +37,7 @@ var roleCarrier = {
             }
         }
 	    else {
+	        if(autoRenew.autoRenew(creep)) return;
             if(source) {
                 if(source.store[RESOURCE_ENERGY]>=creep.carryCapacity-_.sum(creep.carry)){
                     if(creep.withdraw(source,RESOURCE_ENERGY)!=ERR_NOT_IN_RANGE){

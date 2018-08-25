@@ -91,7 +91,8 @@ var autoSpawning = {
             spawn.spawning.setDirections([BOTTOM_RIGHT,BOTTOM_LEFT,TOP_LEFT]);
             var spawningCreep = Game.creeps[spawn.spawning.name];
             spawn.room.visual.text(
-                '🛠️' + spawningCreep.memory.role,
+                '🛠️' 
+                + spawningCreep.memory.role + '('+(100-Math.round((spawn.spawning.remainingTime-1)/spawn.spawning.needTime*100))+'%)',
                 spawn.pos.x + 1, 
                 spawn.pos.y, 
                 {align: 'left', opacity: 0.8}).text(
@@ -100,7 +101,15 @@ var autoSpawning = {
                 spawn.pos.y + 1, 
                 {align: 'left', opacity: 0.8});
         }
-        if(spawn.memory.needRenew>=Game.time-1) return-9999;
+        if(spawn.memory.needRenew.time>=Game.time-1){
+            var renewingCreepName = spawn.memory.needRenew.name;
+            spawn.room.visual.text(
+                '🔄 ' + renewingCreepName,
+                spawn.pos.x + 1, 
+                spawn.pos.y, 
+                {align: 'left', opacity: 0.8});
+            return -9999;
+        }
         if(!spawn.spawning) {
             if(spawn.id=='5b78e5d6f79358042e76ff2e'){
                 if(this.spawnA(spawn,'harvester')!=undefined) return 0;

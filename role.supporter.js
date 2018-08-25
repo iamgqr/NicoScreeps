@@ -1,5 +1,6 @@
 
 var findEnergy = require('function.findEnergy');
+var autoRenew = require('function.autoRenew');
 
 var roleSupporter = {
 
@@ -37,22 +38,7 @@ var roleSupporter = {
         var targets=findTarget();
         var target=targets[0];
         if(creep.memory.working) {
-            var spawn = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_SPAWN) &&
-                        (!structure.spawning||structure.spawning.remainingTime<=creep.pos.getRangeTo(spawn));
-                }
-            });
-	        if(creep.ticksToLive<300||Game.time-creep.memory.needRenew<=creep.body.length*2){
-                if(spawn){
-                    if(spawn.renewCreep(creep)==ERR_NOT_IN_RANGE){
-                        creep.moveTo(spawn, {visualizePathStyle: {stroke: '#ffff66'}});
-                    }
-                    spawn.memory.needRenew=Game.time;
-                }
-                if(creep.ticksToLive<300) creep.memory.needRenew=Game.time;
-                return;
-            }
+            if(autoRenew.autoRenew(creep)) return;
             if(target) {
                 var ret=creep.transfer(target, RESOURCE_ENERGY);
                 if(ret == ERR_NOT_IN_RANGE) {

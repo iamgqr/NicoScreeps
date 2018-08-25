@@ -1,4 +1,5 @@
 var findEnergy = require('function.findEnergy');
+var autoRenew = require('function.autoRenew');
 var roleUpgrader = {
 
     /** @param {Creep} creep **/
@@ -39,22 +40,7 @@ var roleUpgrader = {
 	       //     creep.moveTo(new RoomPosition(22,22,'W42N33'));
 	       //     return;
 	       // }
-            var spawn = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_SPAWN) &&
-                        (!structure.spawning||structure.spawning.remainingTime<=creep.pos.getRangeTo(spawn));
-                }
-            });
-	        if(creep.ticksToLive<300||Game.time-creep.memory.needRenew<=creep.body.length*2){
-                if(spawn){
-                    if(spawn.renewCreep(creep)==ERR_NOT_IN_RANGE){
-                        creep.moveTo(spawn, {visualizePathStyle: {stroke: '#ffff66'}});
-                    }
-                    spawn.memory.needRenew=Game.time;
-                }
-                if(creep.ticksToLive<300) creep.memory.needRenew=Game.time;
-                return;
-            }
+            if(autoRenew.autoRenew(creep)) return;
             if(findEnergy.findEnergy(creep)==0){
                 var reuse=20;
                 if(creep.pos.inRangeTo(creep.room.controller,4)) reuse=0;
