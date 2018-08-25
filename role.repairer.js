@@ -227,8 +227,8 @@ var roleRepairer= {
 	    }
 	    else {
 	        if(behaviourDistant&&creep.room.name!='W42N33'){
-	            var container = creep.pos.findClosestByRange(FIND_STRUCTURES,
-                    {filter:object => (object.structureType==STRUCTURE_CONTAINER)&&object.store.energy>1000});
+	            var container = creep.pos.findInRange(FIND_STRUCTURES,20,
+                    {filter:object => (object.structureType==STRUCTURE_CONTAINER)&&object.store.energy>1000})[0];
                 if(container){
                     if(creep.withdraw(container,RESOURCE_ENERGY)==ERR_NOT_IN_RANGE)
                         creep.moveTo(container);

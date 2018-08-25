@@ -17,14 +17,6 @@ var autoTower = require('auto.tower');
 var autoLink = require('auto.link');
 
 module.exports.loop = function () {
-    for(var name in Game.spawns) {
-        var spawn=Game.spawns[name];
-        var ret=autoSpawning.run(spawn);
-        //console.log('Now at '+Game.time+' spawn '+spawn.name+' returned '+ret);
-        if(ret<=2) continue;
-        autoVisualize.run(spawn);
-        autoReserve.run(spawn);
-    }
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
         if(creep.memory.role == 'harvester') {
@@ -82,6 +74,14 @@ module.exports.loop = function () {
         if(creep.memory.role == 'repairer') {
             roleRepairer.run(creep);
         }
+    }
+    for(var name in Game.spawns) {
+        var spawn=Game.spawns[name];
+        var ret=autoSpawning.run(spawn);
+        //console.log('Now at '+Game.time+' spawn '+spawn.name+' returned '+ret);
+        if(ret<=2) continue;
+        autoVisualize.run(spawn);
+        autoReserve.run(spawn);
     }
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {

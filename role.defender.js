@@ -26,10 +26,10 @@ var roleDefender={
             }
             return;
         }
-        if(creep.room.name!='W42N33'){
-            creep.moveTo(new RoomPosition(22,22,'W42N33'));
-            return -1;
-        }
+        // if(creep.room.name!='W42N33'){
+        //     creep.moveTo(new RoomPosition(22,22,'W42N33'));
+        //     return -1;
+        // }
         creep.drop(RESOURCE_ENERGY);
         if(creep.attack(target) !=OK) {
             if(creep.rangedAttack(target) !=OK)

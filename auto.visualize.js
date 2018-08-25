@@ -1,4 +1,4 @@
-const needVisualizeList=['W41N32','W42N32','W43N33'];
+const needVisualizeList=['W41N32','W43N33'];
 const templateVisualizer=[TOUGH,MOVE,TOUGH,MOVE,ATTACK,MOVE,MOVE,ATTACK];
 const templateWarrior=[TOUGH,MOVE,TOUGH,MOVE,MOVE,ATTACK,ATTACK,MOVE,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,HEAL];
 var autoVisualize = {

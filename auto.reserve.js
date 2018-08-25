@@ -1,4 +1,4 @@
-const needReserveList=['W42N32','W41N32'];//,'W43N33'];
+const needReserveList=['W41N32'];//,'W43N33'];
 const templateClaimer=[CLAIM,MOVE];
 const templateDoubleClaimer=[CLAIM,MOVE,CLAIM,MOVE];
 var autoReserve = {

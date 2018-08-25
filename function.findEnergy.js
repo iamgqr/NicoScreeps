@@ -10,9 +10,15 @@
 module.exports = {
     findEnergy:function(creep){
         var source = null;// creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
-        var container = creep.pos.findClosestByRange(FIND_STRUCTURES,
+        var container= creep.pos.findClosestByRange(FIND_STRUCTURES,
             {filter:object => (/*object.structureType==STRUCTURE_CONTAINER||*/object.structureType==STRUCTURE_STORAGE)&&object.store.energy});
-        var link = creep.pos.findInRange(FIND_STRUCTURES,1,
+        if(creep.room.name=='W42N32'){
+        container= creep.pos.findClosestByRange(FIND_STRUCTURES,
+            {filter:object => (object.structureType==STRUCTURE_CONTAINER||object.structureType==STRUCTURE_STORAGE)&&object.store.energy});
+        source= creep.pos.findClosestByRange(FIND_STRUCTURES,
+            {filter:object => (object.structureType==STRUCTURE_SPAWN)&&object.energy});
+        }
+        var link = creep.pos.findInRange(FIND_STRUCTURES,3,
             {filter:object => object.structureType==STRUCTURE_LINK&&object.energy})[0];
         var resource = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES,
             {filter:object => object.resourceType==RESOURCE_ENERGY&&object.amount>20});

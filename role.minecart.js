@@ -9,7 +9,7 @@ const ends=[
     new RoomPosition(44,12,'W42N32'),
     new RoomPosition(25,47,'W42N33'),
     new RoomPosition( 6,22,'W42N32'),
-    new RoomPosition( 5,22,'W42N32'),
+    new RoomPosition( 6,23,'W42N32'),
     new RoomPosition(24,47,'W42N33'),
 ];
 
