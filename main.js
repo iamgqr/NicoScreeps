@@ -79,9 +79,9 @@ module.exports.loop = function () {
         var spawn=Game.spawns[name];
         var ret=autoSpawning.run(spawn);
         //console.log('Now at '+Game.time+' spawn '+spawn.name+' returned '+ret);
-        if(ret<=2) continue;
-        autoVisualize.run(spawn);
-        autoReserve.run(spawn);
+        if(ret<=3) continue;
+        //autoVisualize.run(spawn);
+        //autoReserve.run(spawn);
     }
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {

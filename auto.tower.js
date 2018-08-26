@@ -16,7 +16,7 @@ module.exports = {
         if(!Game.spawns['Spawn1'].memory.towerEnergyLow&&tower.energy*3<tower.energyCapacity){
             Game.spawns['Spawn1'].memory.towerEnergyLow=true;
         }
-        var target = findEnemy.findEnemy(tower);
+        var target = findEnemy(tower);
         if(target) {
             tower.attack(target);
             return 1;

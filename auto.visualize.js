@@ -1,14 +1,12 @@
-const needVisualizeList=['W41N32','W43N33'];
+const needVisualizeList=['W41N32'/*,'W43N33'*/,'W42N32'];
 const templateVisualizer=[TOUGH,MOVE,TOUGH,MOVE,ATTACK,MOVE,MOVE,ATTACK];
-const templateWarrior=[TOUGH,MOVE,TOUGH,MOVE,MOVE,ATTACK,ATTACK,MOVE,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,HEAL];
+const templateWarrior=[TOUGH,MOVE,TOUGH,MOVE,MOVE,ATTACK,ATTACK,MOVE,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,HEAL,MOVE,CARRY];
 var autoVisualize = {
     run: function(spawn){
         if(spawn.spawning) return -3;
         for(id in needVisualizeList){
             room=needVisualizeList[id];
-            if(spawn.memory.lists['visualizer'][room]!=null&&Game.creeps[spawn.memory.lists['visualizer'][room]]!=null&&
-                Memory.dangerMode[room]
-                ){
+            if(Memory.dangerMode[room]){
                 var newName = 'Warrior' + Game.time + '-' + room;
                 if(spawn.spawnCreep(templateWarrior, newName, 
                     {memory: {role: 'visualizer',targetRoomPos:{roomName:room}}})==OK){
