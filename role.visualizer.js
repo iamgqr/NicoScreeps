@@ -39,10 +39,21 @@ var roleVisualizer = {
             if(creep.room.name=='W43N34')targx=47,targy=25;
         }
         */
+        for(i in creep.carry) if(i!=RESOURCE_ENERGY){
+            var target = Game.spawns['Spawn1'].room.find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_STORAGE);
+                }
+            })[0];
+            if(creep.transfer(target, i) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+            }
+            return;
+        }
         if(creep.memory.targetRoomPos.roomName!=creep.room.name){
             var exit=Game.map.findRoute(creep.room.name,creep.memory.targetRoomPos.roomName)[0];
             if(exit){
-                var exit=creep.pos.findClosestByRange(exit.exit);
+                var exit=creep.pos.findClosestByPath(exit.exit);
                 var reuse=20;
                 if(creep.room.name=='W42N33') reuse=5;
                 else{
@@ -54,7 +65,8 @@ var roleVisualizer = {
             }
             return;
         }
-        var target = findEnemy.findEnemy(creep);
+        var target = findEnemy(creep);
+        //target=Game.getObjectById('5b821b3fa9b3d711efa5d115');
         //target=null;
         if(target) {
             Memory.dangerMode[creep.memory.targetRoomPos.roomName]=1;
@@ -69,7 +81,16 @@ var roleVisualizer = {
             if(creep.hits<creep.hitsMax&&creep.heal(creep)==OK){
                 return;
             }
-            creep.moveTo(positList[creep.memory.targetRoomPos.roomName], {visualizePathStyle: {stroke: '#ff00aa'},ignoreRoads:true,reusePath:20});
+            
+            var target=creep.pos.findClosestByRange(FIND_TOMBSTONES,{filter:object=>_.sum(object.store)&&object.creep.owner.username!='iamgqr'});
+            if(target){
+                for(i in target.store){
+                    if(creep.withdraw(target,i)==ERR_NOT_IN_RANGE){
+                        creep.moveTo(target);
+                    }
+                }
+            }
+            else creep.moveTo(positList[creep.memory.targetRoomPos.roomName], {visualizePathStyle: {stroke: '#ff00aa'},ignoreRoads:true,reusePath:20});
         }
         return 0;
 	}
