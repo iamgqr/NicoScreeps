@@ -4,7 +4,7 @@ var findEnemy = require('function.findEnemy');
 
 var roleDefender={
     run:function(creep){
-        var target = findEnemy.findEnemy(creep);
+        var target = findEnemy(creep);
         if(!target){
             for(i in creep.carry) if(i!=RESOURCE_ENERGY){
                 var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {

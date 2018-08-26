@@ -255,7 +255,7 @@ var roleRepairer= {
 	                return;
 	            }
 	        }
-	        if(autoRenew.autoRenew(creep)) return;
+	        if(autoRenew(creep)) return;
             if(findEnergy.findEnergy(creep)==0){
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#00aaff'}});
             }

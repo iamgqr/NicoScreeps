@@ -1,3 +1,6 @@
+
+var autoRenew = require('function.autoRenew');
+
 var roleDismantler={
 
     /** @param {Creep} creep **/
@@ -35,6 +38,7 @@ var roleDismantler={
             else return -1;
         }
         else {
+            if(autoRenew(creep)) return;
             if(creep.dismantle(target) == ERR_NOT_IN_RANGE) {
                 var reuse=20;
                 if(creep.pos.inRangeTo(target,3)) reuse=0;

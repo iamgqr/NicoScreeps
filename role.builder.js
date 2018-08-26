@@ -1,6 +1,7 @@
 const BEHAVIOUR_NEAREST=0;
 const BEHAVIOUR_FIRST=1;
 var findEnergy = require('function.findEnergy');
+var autoRenew = require('function.autoRenew');
 
 var roleBuilder = {
 
@@ -51,6 +52,7 @@ var roleBuilder = {
                 }*/
 	    }
 	    else{
+            if(autoRenew(creep)) return;
             if(findEnergy.findEnergy(creep)==0){
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#ccff33'}});
             }

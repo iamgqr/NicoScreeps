@@ -32,7 +32,8 @@ var roleUpgrader = {
             creep.upgradeController(creep.room.controller);
             var reuse=20;
             if(creep.pos.inRangeTo(creep.room.controller,4)) reuse=0;
-            if(creep.pos.inRangeTo(creep.room.controller,3)) return;
+            if(creep.room.name!='W42N33'&&creep.pos.inRangeTo(creep.room.controller,1)) return;
+            if(creep.room.name=='W42N33'&&creep.pos.inRangeTo(creep.room.controller,3)) return;
             creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ff00aa'},reusePath:reuse});
         }
         else {
@@ -40,7 +41,7 @@ var roleUpgrader = {
 	       //     creep.moveTo(new RoomPosition(22,22,'W42N33'));
 	       //     return;
 	       // }
-            if(autoRenew.autoRenew(creep)) return;
+            if(autoRenew(creep)) return;
             if(findEnergy.findEnergy(creep)==0){
                 var reuse=20;
                 if(creep.pos.inRangeTo(creep.room.controller,4)) reuse=0;
