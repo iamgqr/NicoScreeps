@@ -10,11 +10,8 @@
 
 module.exports = {
     run:function(tower){
-        if(Game.spawns['Spawn1'].memory.towerEnergyLow&&tower.energy*4>tower.energyCapacity*3){
-            Game.spawns['Spawn1'].memory.towerEnergyLow=false;
-        }
         if(!Game.spawns['Spawn1'].memory.towerEnergyLow&&tower.energy*3<tower.energyCapacity){
-            Game.spawns['Spawn1'].memory.towerEnergyLow=true;
+            Game.spawns['Spawn1'].memory.towerEnergyLow=Game.time;
         }
         var target = findEnemy(tower);
         if(target) {

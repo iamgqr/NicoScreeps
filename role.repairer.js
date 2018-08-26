@@ -184,7 +184,7 @@ var roleRepairer= {
                 return;
 	        }
 	        else {
-	            if(Game.spawns['Spawn1'].memory.towerEnergyLow){
+	            if(Game.spawns['Spawn1'].memory.towerEnergyLow>=Game.time-20){
         	        var towers = creep.room.find(FIND_MY_STRUCTURES, {
                         filter: object => object.structureType==STRUCTURE_TOWER&&object.energy*4<object.energyCapacity*3
                     });
@@ -192,8 +192,8 @@ var roleRepairer= {
                         if(creep.transfer(towers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                             creep.moveTo(towers[0], {visualizePathStyle: {stroke: '#00aaff'}});
                         }
+                        return 0;
                     }
-                return 0;
 	            }
                 if(target) {
                     if(creep.repair(target) == ERR_NOT_IN_RANGE) {

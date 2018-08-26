@@ -31,4 +31,7 @@ module.exports = function(creep){
         if(creep.ticksToLive<300) creep.memory.needRenew=Game.time;
         return 1;
     }
+    else{
+        if(creep.memory.needRenew) delete creep.memory.needRenew;
+    }
 };

@@ -4,6 +4,7 @@ const positList={
     W42N31:new RoomPosition(12, 4,'W42N31'),
     W41N32:new RoomPosition( 1, 2,'W41N32'),
     W43N33:new RoomPosition(47,25,'W43N33'),
+    W43N34:new RoomPosition(47,44,'W43N34'),
 };
 var roleVisualizer = {
 

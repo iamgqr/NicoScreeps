@@ -80,7 +80,11 @@ var moveWork=function(creep,targets){
         var ret=creep.transfer(target, RESOURCE_ENERGY);
         if(ret !=OK) {
             //if(creep.memory.behaviour==2){
-            if(!creep.memory.pathWork||creep.memory.pathWork.incomplete||Game.time-creep.memory.pathWork.time>=20){
+            var ignoreCreeps=1;
+            if(creep.pos.findInRange(FIND_CREEPS,1,{filter:object=>object.name!=creep.name}).length!=0) ignoreCreeps=0;
+            if(!creep.memory.pathWork||creep.memory.pathWork.incomplete||Game.time-creep.memory.pathWork.time>=20||!ignoreCreeps){
+                if(creep.memory.pathWork) delete creep.memory.pathWork;
+                if(creep.memory._move) delete creep.memory._move;
                 creep.memory.pathWork=PathFinder.search(creep.pos,{pos:target.pos,range:1},{
                     maxRooms:1,
                     roomCallback:function(roomName){
@@ -89,7 +93,9 @@ var moveWork=function(creep,targets){
                             var nPos=new RoomPosition(x,y,roomName);
                             matrix.set(x,y,Math.max(_.filter(nPos.lookFor(LOOK_STRUCTURES),
                                 object=>OBSTACLE_OBJECT_TYPES.indexOf(object.structureType)!=-1).length!=0
-                                ||nPos.lookFor(LOOK_TERRAIN)=='wall'?255:1,
+                                ||nPos.lookFor(LOOK_TERRAIN)=='wall'
+                                ||(!ignoreCreeps&&nPos.lookFor(LOOK_CREEPS).length!=0)
+                                ?255:1,
                                 Math.ceil((23-nPos.findInRange(targets,1).length*4)))/nPos.lookFor(LOOK_STRUCTURES,{filter:object=>object.structureType==STRUCTURE_ROAD}).length);
                         }
                         console.log(JSON.stringify(matrix));
