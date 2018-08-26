@@ -3,9 +3,9 @@ const maxSpawn={
     supporter           :2,
     upgrader            :1,
     dismantler          :1,
-    minecart            :5,
+    minecart            :8,
     distantHarvester    :3,
-    carrier             :3,
+    //carrier             :3,
     repairer            :3,
     builder             :1,
     defender            :4,
@@ -15,7 +15,10 @@ const template={
         [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,CARRY,MOVE],
         [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,CARRY,MOVE],
     ],
-    supporter:[CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE],
+    supporter:[
+        [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE],
+        [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE],
+    ],
     upgrader:[WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE],//800
     dismantler:[
         [WORK,WORK,MOVE,WORK,WORK,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
@@ -26,17 +29,20 @@ const template={
         [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE],
         [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE],
         [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE],//1500
+        [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
+        [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
+        [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
     ],
     distantHarvester:[
         [MOVE,CARRY,WORK,MOVE,WORK,WORK,MOVE,WORK,WORK],
         [MOVE,CARRY,WORK,MOVE,WORK,WORK,MOVE,WORK,WORK],
         [MOVE,CARRY,WORK,MOVE,WORK,WORK,MOVE,WORK,WORK],
     ],//1150
-    carrier:[
-        [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
-        [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
-        [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
-    ],//1050
+    // carrier:[
+    //     [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
+    //     [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
+    //     [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
+    // ],//1050
     repairer:[
         [WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,WORK,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,MOVE,MOVE],
         [WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,WORK,MOVE,WORK,MOVE,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE],//1400
@@ -87,8 +93,11 @@ var autoSpawning = {
         }
     },
     run: function(spawn){
+        // for(arr in spawn.memory.lists) if(maxSpawn[arr]&&spawn.memory.lists[arr].length>maxSpawn[arr]){
+        //     spawn.memory.lists[arr]=_.slice(spawn.memory.lists[arr],0,maxSpawn[arr]);
+        // }
         if(spawn.spawning) {
-            spawn.spawning.setDirections([BOTTOM_RIGHT,BOTTOM_LEFT,TOP_LEFT]);
+            spawn.spawning.setDirections([BOTTOM_RIGHT,BOTTOM_LEFT,TOP_LEFT,TOP_RIGHT]);
             var spawningCreep = Game.creeps[spawn.spawning.name];
             spawn.room.visual.text(
                 '🛠️' 
@@ -101,39 +110,30 @@ var autoSpawning = {
                 spawn.pos.y + 1, 
                 {align: 'left', opacity: 0.8});
         }
-        if(spawn.memory.needRenew.time>=Game.time-1){
-            var renewingCreepName = spawn.memory.needRenew.name;
-            spawn.room.visual.text(
-                '🔄 ' + renewingCreepName,
-                spawn.pos.x + 1, 
-                spawn.pos.y-1, 
-                {align: 'left', opacity: 0.8});
-            console.log('Renewing creep '+renewingCreepName);
-            return -9999;
-        }
+        if(spawn.memory.needRenew.time>=Game.time-1) return -9999;
         if(!spawn.spawning) {
             if(spawn.id=='5b78e5d6f79358042e76ff2e'){
                 if(this.spawnA(spawn,'harvester')!=undefined) return 0;
                 
-                if(this.spawnB(spawn,'supporter')!=undefined) return 1;
+                if(this.spawnA(spawn,'supporter')!=undefined) return 1;
                 
-                if(this.spawnB(spawn,'upgrader')!=undefined) return 2;
+                if(this.spawnA(spawn,'carrier')!=undefined) return 2;
+                if(this.spawnB(spawn,'upgrader')!=undefined) return 3;
                 
-                if(this.spawnA(spawn,'dismantler')!=undefined) return 3;
+                if(this.spawnA(spawn,'dismantler')!=undefined) return 4;
                 
                 if(Math.random()>0.6){
-                    if(this.spawnA(spawn,'minecart')!=undefined) return 4;
+                    if(this.spawnA(spawn,'minecart')!=undefined) return 5;
                 }
                 else{
-                    if(this.spawnA(spawn,'distantHarvester')!=undefined) return 5;
+                    if(this.spawnA(spawn,'distantHarvester')!=undefined) return 6;
                 }
                 
                 if(_.filter(Game.creeps, (creep) => creep.memory.role == 'distantHarvester').length<maxSpawn['distantHarvester']||
                    _.filter(Game.creeps, (creep) => creep.memory.role == 'minecart').length<maxSpawn['minecart'])
-                    return 5;
+                    return 6;
                 
                 //if(Math.random()>0.6) 
-                if(this.spawnA(spawn,'carrier')!=undefined) return 6;
                 
                 if(Math.random()>0.3)
                     if(this.spawnA(spawn,'repairer')!=undefined) return 7;
@@ -142,12 +142,12 @@ var autoSpawning = {
                     if(this.spawnB(spawn,'builder')!=undefined) return 8;
                 
                 if(Math.random()>0.3)
-                    if(this.spawnB(spawn,'builder')!=undefined) return 9;
+                    if(this.spawnB(spawn,'defender')!=undefined) return 9;
                 
                 
                 var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
             
-                if(Math.random()>0.9) if(upgraders.length < 8) {
+                if(Math.random()>0.8) if(upgraders.length < 6) {
                     var newName = 'Upgrader' + Game.time+'_'+spawn.name.substring(5);
                     if(spawn.spawnCreep(template['upgrader'], newName, 
                         {memory: {role: 'upgrader',behaviour:Math.round(Math.random())}})==OK){
@@ -170,7 +170,7 @@ var autoSpawning = {
                             console.log('Spawning new '+role+': ' + newName);
                         }
                 }
-                    return 1;
+                return 1;
             }
             //return run();
         }

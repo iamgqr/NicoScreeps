@@ -4,6 +4,9 @@ const begins=[
     new RoomPosition(15,41,'W42N32'),
     new RoomPosition(14,45,'W42N32'),
     new RoomPosition( 5,21,'W42N32'),
+    new RoomPosition(24,45,'W42N33'),
+    new RoomPosition(25,45,'W42N33'),
+    new RoomPosition( 7,14,'W42N33'),
 ];
 const ends=[
     new RoomPosition(44,12,'W42N32'),
@@ -11,6 +14,9 @@ const ends=[
     new RoomPosition( 6,22,'W42N32'),
     new RoomPosition( 6,23,'W42N32'),
     new RoomPosition(24,47,'W42N33'),
+    new RoomPosition(20,28,'W42N33'),
+    new RoomPosition(20,27,'W42N33'),
+    new RoomPosition(18,26,'W42N33'),
 ];
 
 

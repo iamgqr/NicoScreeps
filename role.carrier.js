@@ -37,7 +37,7 @@ var roleCarrier = {
             }
         }
 	    else {
-	        if(autoRenew.autoRenew(creep)) return;
+	        if(autoRenew(creep)) return;
             if(source) {
                 if(source.store[RESOURCE_ENERGY]>=creep.carryCapacity-_.sum(creep.carry)){
                     if(creep.withdraw(source,RESOURCE_ENERGY)!=ERR_NOT_IN_RANGE){
