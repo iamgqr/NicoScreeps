@@ -9,6 +9,7 @@ var autoSpawning = {
         for(var id=0;id<maxSpawn[spawn.name][role];id++){
             const listCreep=spawn.memory.lists[role][id];
             const Ntemplate=template[spawn.name][role][id];
+            if(Ntemplate==null) continue;
             if(listCreep==null||Game.creeps[listCreep]==null||
                 Game.creeps[listCreep].ticksToLive<
                 Game.map.getRoomLinearDistance(spawn.room.name,Game.creeps[listCreep].room.name)*50
@@ -94,6 +95,8 @@ var autoSpawning = {
                 
                 if(Math.random()>0.3)
                     if(this.spawnB(spawn,'defender')!=undefined) return 9;
+                
+                if(this.spawnA(spawn,'miner')!=undefined) return 9;
                 
                 
                 var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');

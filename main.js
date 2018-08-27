@@ -10,6 +10,7 @@ var roleClaimer = require('role.claimer');
 var roleDismantler = require('role.dismantler');
 var roleDefender = require('role.defender');
 var roleVisualizer = require('role.visualizer');
+var roleMiner = require('role.miner');
 var autoSpawning = require('auto.spawning');
 var autoVisualize = require('auto.visualize');
 var autoReserve = require('auto.reserve');
@@ -74,6 +75,9 @@ module.exports.loop = function () {
         }
         if(creep.memory.role == 'repairer') {
             roleRepairer.run(creep);
+        }
+        if(creep.memory.role == 'miner') {
+            roleMiner.run(creep);
         }
     }
     for(var name in Game.spawns) {

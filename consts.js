@@ -14,15 +14,16 @@ maxSpawn:{
         supporter           :2,
         upgrader            :1,
         dismantler          :1,
-        minecart            :8,
+        minecart            :9,
         distantHarvester    :5,
         //carrier             :3,
         repairer            :3,
         builder             :1,
         defender            :4,
+        miner               :1,
     },
     'Spawn2':{
-        harvester           :2,
+        harvester           :1,
         supporter           :1,
         upgrader            :1,
         dismantler          :1,
@@ -87,10 +88,12 @@ template:{
             [WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,RANGED_ATTACK,RANGED_ATTACK],//1240
             [WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,RANGED_ATTACK,RANGED_ATTACK],//1240
         ],
+        miner:[
+            [WORK,WORK,WORK,CARRY,MOVE,MOVE],
+        ],
     },
     'Spawn2':{
         harvester:[
-            [WORK,MOVE,CARRY],
             [WORK,MOVE,CARRY],
         ],
         supporter:[
@@ -182,7 +185,6 @@ sourceList:{
     ],
     'Spawn2':[
         '59f1a02582100e1594f36279',
-        '59f1a02582100e1594f36279',
     ],
 },
 positList:{
@@ -192,7 +194,6 @@ positList:{
     ],
     'Spawn2':[
         new RoomPosition(32,32,'W45N33'),
-        new RoomPosition(32,33,'W45N33'),
     ],
 },
 },
@@ -208,7 +209,7 @@ begins:{
         new RoomPosition(24,45,'W42N33'),
         new RoomPosition(25,45,'W42N33'),
         new RoomPosition( 7,14,'W42N33'),
-        new RoomPosition(34,43,'W42N33'),
+        new RoomPosition(44,20,'W42N33'),
     ],
 },
 ends:{
@@ -221,7 +222,43 @@ ends:{
         new RoomPosition(20,28,'W42N33'),
         new RoomPosition(20,27,'W42N33'),
         new RoomPosition(18,26,'W42N33'),
-        new RoomPosition(20,26,'W42N33'),
+        new RoomPosition(45,19,'W42N33'),
+    ],
+},
+typeList:{
+    'Spawn1':[
+        RESOURCE_ENERGY,
+        RESOURCE_ENERGY,
+        RESOURCE_ENERGY,
+        RESOURCE_ENERGY,
+        RESOURCE_ENERGY,
+        RESOURCE_ENERGY,
+        RESOURCE_ENERGY,
+        RESOURCE_ENERGY,
+        RESOURCE_ZYNTHIUM,
+    ],
+}
+},
+
+miner:{
+sourceList:{
+    'Spawn1':[
+        '5b83e939f988e516d49465de',
+    ],
+},
+positList:{
+    'Spawn1':[
+        new RoomPosition(45,19,'W42N33'),
+    ],
+},
+containerList:{
+    'Spawn1':[
+        '5b83ae67833a0502a12aead9',
+    ],
+},
+typeList:{
+    'Spawn1':[
+        RESOURCE_ZYNTHIUM,
     ],
 },
 },
