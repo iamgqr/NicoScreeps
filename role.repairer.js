@@ -256,7 +256,7 @@ var roleRepairer= {
 	            }
 	        }
 	        if(autoRenew(creep)) return;
-            if(findEnergy.findEnergy(creep)==0){
+            if(findEnergy(creep)==0){
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#00aaff'}});
             }
             //var target=Game.getObjectById('5b7a5c19b0d0407bcad721fe');

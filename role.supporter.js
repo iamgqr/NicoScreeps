@@ -139,7 +139,7 @@ var roleSupporter = {
         }
 	    else {
             //console.log('QWQ'+creep.name);
-	        if(findEnergy.findEnergy(creep)==0){
+	        if(findEnergy(creep)==0){
                 return moveWork(creep);
 	        }
         }

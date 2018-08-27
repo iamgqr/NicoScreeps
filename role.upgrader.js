@@ -43,7 +43,7 @@ var roleUpgrader = {
 	       //     return;
 	       // }
             if(autoRenew(creep)) return;
-            if(findEnergy.findEnergy(creep)==0){
+            if(findEnergy(creep)==0){
                 var reuse=20;
                 if(creep.pos.inRangeTo(target,4)) reuse=0;
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#ff00aa'},reusePath:reuse});

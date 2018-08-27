@@ -53,7 +53,7 @@ var roleBuilder = {
 	    }
 	    else{
             if(autoRenew(creep)) return;
-            if(findEnergy.findEnergy(creep)==0){
+            if(findEnergy(creep)==0){
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#ccff33'}});
             }
             /*target=Game.getObjectById('5b798bf04602265638d1761b');
