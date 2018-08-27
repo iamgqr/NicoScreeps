@@ -31,7 +31,7 @@ var roleRepairer= {
         }
         targets = creep.room.find(FIND_STRUCTURES, {
             filter: object => object.hits < object.hitsMax && (object.owner==undefined||object.owner.username=='iamgqr') && Memory.dismantleList.indexOf(object.id)==-1
-            &&object.structureType!=STRUCTURE_ROAD
+            &&object.structureType!=STRUCTURE_ROAD&&object.structureType!=STRUCTURE_CONTAINER
         });
         sigmoid=function(a,b,c){
             return 1.0/(1.0+Math.exp((a-b)/c))
@@ -184,7 +184,7 @@ var roleRepairer= {
                 return;
 	        }
 	        else {
-	            if(Game.spawns['Spawn1'].memory.towerEnergyLow>=Game.time-20){
+	            if(Game.spawns['Spawn1'].memory.towerEnergyLow){
         	        var towers = creep.room.find(FIND_MY_STRUCTURES, {
                         filter: object => object.structureType==STRUCTURE_TOWER&&object.energy*4<object.energyCapacity*3
                     });

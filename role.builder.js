@@ -21,15 +21,15 @@ var roleBuilder = {
             return -2;
         }
         var target;
-        if(creep.memory.behaviour==BEHAVIOUR_NEAREST){
+        //if(creep.memory.behaviour==BEHAVIOUR_NEAREST){
             target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES,
                 {filter:site => site.owner.username=='iamgqr'});
-        }
-        else if(creep.memory.behaviour==BEHAVIOUR_FIRST){
-            var targets = creep.room.find(FIND_CONSTRUCTION_SITES,
-                {filter:site => site.owner.username=='iamgqr'});
-            target=targets[0];
-        }
+        // }
+        // else if(creep.memory.behaviour==BEHAVIOUR_FIRST){
+        //     var targets = creep.room.find(FIND_CONSTRUCTION_SITES,
+        //         {filter:site => site.owner.username=='iamgqr'});
+        //     target=targets[0];
+        // }
 	    if(creep.memory.working){
             if(target!=null) {
                 if(creep.build(target) == ERR_NOT_IN_RANGE) {

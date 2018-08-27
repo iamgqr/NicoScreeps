@@ -1,15 +1,17 @@
-const needVisualizeList=['W41N32','W43N33','W44N34','W42N32'];
+const needVisualizeList={
+    'Spawn1':['W41N32','W43N33','W44N33','W45N33','W42N32']
+}
 const templateVisualizer=[TOUGH,MOVE,TOUGH,MOVE,ATTACK,MOVE,MOVE,ATTACK];
 const templateWarrior=[TOUGH,MOVE,TOUGH,MOVE,MOVE,ATTACK,ATTACK,MOVE,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,HEAL,MOVE,CARRY];
 var autoVisualize = {
     run: function(spawn){
         if(spawn.spawning) return -3;
-        for(id in needVisualizeList){
-            room=needVisualizeList[id];
+        for(id in needVisualizeList[spawn.name]){
+            room=needVisualizeList[spawn.name][id];
             if(Memory.dangerMode[room]){
                 var newName = 'Warrior' + Game.time + '-' + room;
                 if(spawn.spawnCreep(templateWarrior, newName, 
-                    {memory: {role: 'visualizer',targetRoomPos:{roomName:room}}})==OK){
+                    {memory: {role: 'visualizer',spawn:spawn.name,targetRoomPos:{roomName:room}}})==OK){
                         console.log('Spawning new waarrior: ' + newName);
                         spawn.memory.lists['visualizer'][room]=newName;
                         return 0;
@@ -21,7 +23,7 @@ var autoVisualize = {
                 ){
                 var newName = 'Visualizer' + Game.time + '-' + room;
                 if(spawn.spawnCreep(templateVisualizer, newName, 
-                    {memory: {role: 'visualizer',targetRoomPos:{roomName:room}}})==OK){
+                    {memory: {role: 'visualizer',spawn:spawn.name,targetRoomPos:{roomName:room}}})==OK){
                         console.log('Spawning new visualizer: ' + newName);
                         spawn.memory.lists['visualizer'][room]=newName;
                         return 0;

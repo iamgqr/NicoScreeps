@@ -18,7 +18,8 @@ var roleDismantler={
             creep.moveTo(new RoomPosition(22,22,'W42N33'));
             return -2;
         }
-        var target = Game.getObjectById(Memory.dismantleList[0]);
+        var targets = _.map(Memory.dismantleList[0],Game.getObjectById);
+        var target=_.filter(targets,object=>object.room.name==creep.room.name)[0];
         if(!target) return -1;
 	    if(creep.memory.working) {
             //return -1;

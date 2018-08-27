@@ -1,11 +1,7 @@
-const sourceList=[
-    '59f1a05082100e1594f36842',
-    '59f1a05082100e1594f36844',
-];
-const positList=[
-    new RoomPosition( 5,13,'W42N33'),
-    new RoomPosition(36,43,'W42N33'),
-];
+const consts = require('consts');
+const sourceList=consts.harvester.sourceList;
+const positList=consts.harvester.positList;
+
 var roleHarvester = {
 
     /** @param {Creep} creep **/
@@ -19,12 +15,12 @@ var roleHarvester = {
 	   //     creep.memory.working = true;
 	   //     creep.say('🚚 transport');
 	   // }
-        if(creep.room.name!='W42N33'){
-            creep.moveTo(new RoomPosition(22,22,'W42N33'));
-            return -2;
-        }
+        // if(creep.room.name!='W42N33'){
+        //     creep.moveTo(new RoomPosition(22,22,'W42N33'));
+        //     return -2;
+        // }
         
-        var source=Game.getObjectById(sourceList[creep.memory.behaviour]);
+        var source=Game.getObjectById(sourceList[creep.memory.spawn][creep.memory.behaviour]);
         var target = creep.pos.findInRange(FIND_STRUCTURES,1, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) &&
@@ -59,8 +55,8 @@ var roleHarvester = {
             }
             else return -1;*/
         //}
-        if(!creep.pos.isEqualTo(positList[creep.memory.behaviour])){
-            creep.moveTo(positList[creep.memory.behaviour], {visualizePathStyle: {stroke: '#ffaa00'}});
+        if(!creep.pos.isEqualTo(positList[creep.memory.spawn][creep.memory.behaviour])){
+            creep.moveTo(positList[creep.memory.spawn][creep.memory.behaviour], {visualizePathStyle: {stroke: '#ffaa00'}});
             return;
         }
         if(target) {

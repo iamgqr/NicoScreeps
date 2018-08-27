@@ -24,17 +24,18 @@ var roleUpgrader = {
             }
             else return;
         }*/
+        var target=Game.spawns[creep.memory.spawn].room.controller;
 	    if(creep.memory.working) {
 	       // if(creep.memory.behaviour==1&&creep.room.name!='W42N32'){
 	       //     creep.moveTo(creep.pos.findClosestByPath(FIND_EXIT_BOTTOM),{visualizePathStyle: {stroke: '#ff00aa'}});
 	       //     return;
 	       // }
-            creep.upgradeController(creep.room.controller);
+            creep.upgradeController(target);
             var reuse=20;
-            if(creep.pos.inRangeTo(creep.room.controller,4)) reuse=0;
-            if(creep.room.name!='W42N33'&&creep.pos.inRangeTo(creep.room.controller,1)) return;
-            if(creep.room.name=='W42N33'&&creep.pos.inRangeTo(creep.room.controller,3)) return;
-            creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ff00aa'},reusePath:reuse});
+            if(creep.pos.inRangeTo(target,4)) reuse=0;
+            //if(creep.room.name!='W42N33'&&creep.pos.inRangeTo(creep.room.controller,1)) return;
+            if(creep.pos.inRangeTo(target,3)) return;
+            creep.moveTo(target, {visualizePathStyle: {stroke: '#ff00aa'},reusePath:reuse});
         }
         else {
 	       // if(creep.memory.behaviour==1&&creep.room.name=='W42N32'){
@@ -44,8 +45,8 @@ var roleUpgrader = {
             if(autoRenew(creep)) return;
             if(findEnergy.findEnergy(creep)==0){
                 var reuse=20;
-                if(creep.pos.inRangeTo(creep.room.controller,4)) reuse=0;
-                creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ff00aa'},reusePath:reuse});
+                if(creep.pos.inRangeTo(target,4)) reuse=0;
+                creep.moveTo(target, {visualizePathStyle: {stroke: '#ff00aa'},reusePath:reuse});
             }
         }
         return 0;

@@ -15,6 +15,7 @@ var autoVisualize = require('auto.visualize');
 var autoReserve = require('auto.reserve');
 var autoTower = require('auto.tower');
 var autoLink = require('auto.link');
+var visualTrack = require('visual.track');
 
 module.exports.loop = function () {
     for(var name in Game.creeps) {
@@ -77,11 +78,13 @@ module.exports.loop = function () {
     }
     for(var name in Game.spawns) {
         var spawn=Game.spawns[name];
+        if(spawn.room.name=='W42N33') visualTrack(spawn.room,true);
+        else visualTrack(spawn.room,false);
         var ret=autoSpawning.run(spawn);
         //console.log('Now at '+Game.time+' spawn '+spawn.name+' returned '+ret);
         if(ret<=3) continue;
-        //autoVisualize.run(spawn);
-        //autoReserve.run(spawn);
+        autoVisualize.run(spawn);
+        autoReserve.run(spawn);
     }
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {
@@ -112,7 +115,9 @@ module.exports.loop = function () {
     //Memory.reportCPU=Game.cpu.getUsed();
     Memory.reportCPU=Game.cpu.getUsed()*0.01+Memory.reportCPU*0.99;
     visual.text(
-        "CPU:"+Memory.reportCPU.toFixed(2),49,1, 
+        "CPU:"+Memory.reportCPU.toFixed(2),49,3, 
+        {align: 'right', color: '#ee99cc', opacity: 0.4, font: '2 Consolas'}).text(
+        "bucket:"+Game.cpu.bucket,49,1, 
         {align: 'right', color: '#ee99cc', opacity: 0.4, font: '2 Consolas'});
     if(Game.time%100==0){
         console.log('Currently average used cpu is:'+Memory.reportCPU);

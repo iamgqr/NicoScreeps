@@ -23,13 +23,13 @@ module.exports = {
             tower.heal(target);
             return 1;
         }
-        var targets = Game.spawns['Spawn1'].room.find(FIND_STRUCTURES, {
-            filter: object => (object.structureType==STRUCTURE_ROAD||object.structureType==STRUCTURE_RAMPART)
+        var targets = tower.room.find(FIND_STRUCTURES, {
+            filter: object => (object.structureType==STRUCTURE_ROAD||object.structureType==STRUCTURE_RAMPART||object.structureType==STRUCTURE_CONTAINER)
             //&& object.hitsMax-object.hits>=200
             && (object.owner==undefined||object.owner.username=='iamgqr')
         });
         targets.sort((a,b) =>
-            a.hits-b.hits
+            a.hits/(a.structureType.length-3)/(a.structureType.length-3)-b.hits/(b.structureType.length-3)/(b.structureType.length-3)
         );
         target=targets[0];
         if(target){

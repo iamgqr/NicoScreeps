@@ -1,21 +1,22 @@
-var roleVisualizer = {
+var roleClaimer = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
         
-        if(creep.memory.targetRoomPos.roomName=='W42N32'){
-            if(creep.room.name=='W42N33'){creep.moveTo(22,49,{reusePath:20});return;}
-        }
-        if(creep.memory.targetRoomPos.roomName=='W42N31'){
-            if(creep.room.name=='W42N33'){creep.moveTo(22,49,{reusePath:20});return;}
-            if(creep.room.name=='W42N32'){creep.moveTo(13,49,{reusePath:20});return;}
-        }
-        if(creep.memory.targetRoomPos.roomName=='W41N32'){
-            if(creep.room.name=='W42N33'){creep.moveTo(22,49,{reusePath:20});return;}
-            if(creep.room.name=='W42N32'){creep.moveTo(49,14,{reusePath:20});return;}
-        }
-        if(creep.memory.targetRoomPos.roomName=='W43N33'){
-            if(creep.room.name=='W42N33'){creep.moveTo(0,23,{reusePath:20});return;}
+        if(creep.memory.targetRoomPos.roomName!=creep.room.name){
+            var exit=Game.map.findRoute(creep.room.name,creep.memory.targetRoomPos.roomName)[0];
+            if(exit){
+                var exit=creep.pos.findClosestByPath(exit.exit);
+                var reuse=20;
+                if(creep.room.name=='W42N33') reuse=5;
+                else{
+                    var crp = creep.pos.findInRange(FIND_CREEPS,2,
+                        {filter:object => object.owner.username=='iamgqr'&&object.memory.role=='minecart'})[0];
+                    if(crp) reuse=0;
+                }
+                creep.moveTo(exit, {ignoreRoads:true,reusePath:reuse});
+            }
+            return;
         }
         const target = creep.room.controller;
         if(target) {
@@ -48,4 +49,4 @@ var roleVisualizer = {
 	}
 };
 
-module.exports = roleVisualizer;
+module.exports = roleClaimer;

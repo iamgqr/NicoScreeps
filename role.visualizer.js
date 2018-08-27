@@ -1,11 +1,8 @@
+const consts = require('consts');
+const positList=consts.visualizer.positList;
+
 var findEnemy = require('function.findEnemy');
-const positList={
-    W42N32:new RoomPosition(14, 5,'W42N32'),
-    W42N31:new RoomPosition(12, 4,'W42N31'),
-    W41N32:new RoomPosition( 1, 2,'W41N32'),
-    W43N33:new RoomPosition(47,25,'W43N33'),
-    W43N34:new RoomPosition(47,44,'W43N34'),
-};
+
 var roleVisualizer = {
 
     /** @param {Creep} creep **/
@@ -91,7 +88,7 @@ var roleVisualizer = {
                     }
                 }
             }
-            else creep.moveTo(positList[creep.memory.targetRoomPos.roomName], {visualizePathStyle: {stroke: '#ff00aa'},ignoreRoads:true,reusePath:20});
+            else creep.moveTo(positList[creep.memory.spawn][creep.memory.targetRoomPos.roomName], {visualizePathStyle: {stroke: '#ff00aa'},ignoreRoads:true,reusePath:20});
         }
         return 0;
 	}

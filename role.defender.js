@@ -17,6 +17,7 @@ var roleDefender={
                 }
                 return;
             }
+            if(creep.carry.energy) return -1;
             var target=creep.pos.findClosestByRange(FIND_TOMBSTONES,{filter:object=>_.sum(object.store)&&object.creep.owner.username!='iamgqr'});
             if(!target) return -1;
             for(i in target.store){

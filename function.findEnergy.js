@@ -3,13 +3,12 @@ module.exports = {
     findEnergy:function(creep){
         var source = null;// creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
         var container= creep.pos.findClosestByRange(FIND_STRUCTURES,
-            {filter:object => (//object.structureType==STRUCTURE_CONTAINER||
-                object.structureType==STRUCTURE_STORAGE)&&object.store.energy});
-        if(creep.room.name=='W42N32'){
+            {filter:object => (object.structureType==STRUCTURE_CONTAINER||
+                object.structureType==STRUCTURE_STORAGE)&&object.store.energy*2>=creep.carryCapacity-_.sum(creep.carry)});
+        if(creep.room.name=='W45N33'){
         container= creep.pos.findClosestByRange(FIND_STRUCTURES,
             {filter:object => (object.structureType==STRUCTURE_CONTAINER||object.structureType==STRUCTURE_STORAGE)&&object.store.energy});
-        source= creep.pos.findClosestByRange(FIND_STRUCTURES,
-            {filter:object => (object.structureType==STRUCTURE_SPAWN)&&object.energy});
+        source= creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
         }
         var link = creep.pos.findInRange(FIND_STRUCTURES,3,
             {filter:object => object.structureType==STRUCTURE_LINK&&object.energy})[0];
