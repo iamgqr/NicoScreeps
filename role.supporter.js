@@ -103,7 +103,7 @@ var moveWork=function(creep,targets,dep=0){
                     moveWork(creep,targets,dep+1);
                 }
             }
-            else findEnergy.findEnergy(creep);
+            else findEnergy(creep);
             
         }
     }
