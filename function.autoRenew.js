@@ -2,7 +2,7 @@ const consts = require('consts');
 const template=consts.template;
 
 module.exports = function(creep){
-    if(!_.isEqual(creep.body,template[creep.memory.spawn][creep.memory.role][creep.memory.behaviour])) return;
+    if(!_.isEqual(_.map(creep.body,'type'),template[creep.memory.spawn][creep.memory.role][creep.memory.behaviour])) return;
     var spawn = creep.pos.findClosestByRange(FIND_STRUCTURES, {
         filter: (structure) => {
             var range=Game.map.getRoomLinearDistance(structure.room.name,creep.room.name)*50+Memory.constReactTime;
