@@ -12,24 +12,25 @@ maxSpawn:{
     'Spawn1':{
         harvester           :2,
         supporter           :2,
-        upgrader            :1,
+        upgrader            :2,
         dismantler          :1,
         minecart            :9,
-        distantHarvester    :5,
+        distantHarvester    :3,
         //carrier             :3,
         repairer            :3,
         builder             :1,
-        defender            :4,
+        defender            :2,
         miner               :1,
     },
     'Spawn2':{
-        harvester           :1,
+        harvester           :2,
         supporter           :1,
-        upgrader            :1,
+        upgrader            :5,
         dismantler          :1,
-        //carrier             :3,
+        minecart            :1,
+        distantHarvester    :1,
         repairer            :1,
-        builder             :3,
+        builder             :1,
         defender            :2,
     }
 },
@@ -58,8 +59,8 @@ template:{
             [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE],//1500
             [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
             [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
-            [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE],
-            [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
+            [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
+            [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE],
         ],
         distantHarvester:[
             [MOVE,CARRY,WORK,MOVE,WORK,WORK,MOVE,WORK,WORK],
@@ -85,60 +86,42 @@ template:{
             [WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE],//1100
         ],
         defender:[
-            [WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,RANGED_ATTACK,RANGED_ATTACK],//1240
-            [WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,RANGED_ATTACK,RANGED_ATTACK],//1240
+            [WORK,CARRY,CARRY,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK],//1240
+            [WORK,CARRY,CARRY,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK],//1240
         ],
         miner:[
-            [WORK,WORK,WORK,CARRY,MOVE,MOVE],
+            [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE],
         ],
     },
     'Spawn2':{
         harvester:[
-            [WORK,MOVE,CARRY],
+            [WORK,WORK,WORK,CARRY,MOVE,MOVE],
+            [WORK,WORK,WORK,CARRY,MOVE,MOVE],
         ],
         supporter:[
             [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE],
-            [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE],
         ],
         upgrader:[
-            [WORK,CARRY,MOVE,MOVE],//1000
+            [WORK,WORK,CARRY,CARRY,MOVE,MOVE],
+            [WORK,WORK,CARRY,CARRY,MOVE,MOVE],
         ],
         dismantler:[
-            [WORK,WORK,MOVE,WORK,WORK,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
+            [WORK,WORK,CARRY,CARRY,MOVE,MOVE],
         ],
         minecart:[
-            [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE],
-            [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE],
-            [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE],
-            [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE],
-            [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE],//1500
-            [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
-            [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
-            [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
-            [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
+            [CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE],
         ],
         distantHarvester:[
-            [MOVE,CARRY,WORK,MOVE,WORK,WORK,MOVE,WORK,WORK],
-            [MOVE,CARRY,WORK,MOVE,WORK,WORK,MOVE,WORK,WORK],
-            [MOVE,CARRY,WORK,MOVE,WORK,WORK,MOVE,WORK,WORK],
-            [MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,WORK,MOVE,WORK,MOVE,WORK,MOVE,MOVE,WORK,WORK],
-            [MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,WORK,MOVE,WORK,MOVE,WORK,MOVE,MOVE,WORK,WORK],
-        ],//1150
-        // carrier:[
-        //     [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
-        //     [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
-        //     [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE],
-        // ],//1050
+            [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE],
+        ],
         repairer:[
-            [WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,WORK,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,MOVE,MOVE],
-            [WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,WORK,MOVE,WORK,MOVE,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE],//1400
-            [WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,WORK,MOVE,WORK,MOVE,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE],//1400
-            [WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,WORK,MOVE,WORK,MOVE,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE],//1400
-            [WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,WORK,MOVE,WORK,MOVE,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE],//1400
+            [WORK,CARRY,CARRY,CARRY,MOVE,MOVE],
+            [WORK,CARRY,CARRY,CARRY,MOVE,MOVE],
         ],//1200
         builder:[
-            [WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE],//1100
-            [WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE],//1100
+            [WORK,WORK,CARRY,CARRY,MOVE,MOVE],
+            [WORK,WORK,CARRY,CARRY,MOVE,MOVE],
+            [WORK,WORK,CARRY,CARRY,MOVE,MOVE],
         ],
         defender:[
             [WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,RANGED_ATTACK,RANGED_ATTACK],//1240
@@ -155,7 +138,9 @@ sourceList:{
         '59f1a05082100e1594f36847',
         '59f1a02582100e1594f36279',
         '59f1a02582100e1594f36279',
-        '59f1a02582100e1594f36279',
+    ],
+    'Spawn2':[
+        '59f1a02582100e1594f3627b',
     ],
 },
 positList:{
@@ -165,7 +150,9 @@ positList:{
         new RoomPosition(17,39,'W42N32'),
         new RoomPosition(32,33,'W45N33'),
         new RoomPosition(33,33,'W45N33'),
-        new RoomPosition(32,32,'W45N33'),
+    ],
+    'Spawn2':[
+        new RoomPosition(32,7,'W45N32'),
     ],
 },
 containerList:{
@@ -173,6 +160,11 @@ containerList:{
         '5b83711da4dafb41cb674131',
         '5b7f90ce9b3af8175e52293c',
         '5b7ecdfa1ad7d540025acc17',
+        ,
+        '5b83f551f9ee417bc43a7f59',
+    ],
+    'Spawn2':[
+        
     ],
 },
 },
@@ -185,6 +177,7 @@ sourceList:{
     ],
     'Spawn2':[
         '59f1a02582100e1594f36279',
+        '59f1a02582100e1594f36279',
     ],
 },
 positList:{
@@ -194,6 +187,7 @@ positList:{
     ],
     'Spawn2':[
         new RoomPosition(32,32,'W45N33'),
+        new RoomPosition(32,33,'W45N33'),
     ],
 },
 },
@@ -211,18 +205,24 @@ begins:{
         new RoomPosition( 7,14,'W42N33'),
         new RoomPosition(44,20,'W42N33'),
     ],
+    'Spawn2':[
+        new RoomPosition(32, 6,'W45N32'),
+    ],
 },
 ends:{
     'Spawn1':[
         new RoomPosition(44,12,'W42N32'),
         new RoomPosition(25,47,'W42N33'),
-        new RoomPosition( 5,23,'W42N32'),
-        new RoomPosition( 6,23,'W42N32'),
+        new RoomPosition( 5,22,'W42N32'),
+        new RoomPosition( 6,22,'W42N32'),
         new RoomPosition(24,47,'W42N33'),
         new RoomPosition(20,28,'W42N33'),
         new RoomPosition(20,27,'W42N33'),
         new RoomPosition(18,26,'W42N33'),
-        new RoomPosition(45,19,'W42N33'),
+        new RoomPosition(20,27,'W42N33'),
+    ],
+    'Spawn2':[
+        new RoomPosition(31,34,'W45N33'),
     ],
 },
 typeList:{
@@ -237,13 +237,16 @@ typeList:{
         RESOURCE_ENERGY,
         RESOURCE_ZYNTHIUM,
     ],
+    'Spawn2':[
+        RESOURCE_ENERGY,
+    ],
 }
 },
 
 miner:{
 sourceList:{
     'Spawn1':[
-        '5b83e939f988e516d49465de',
+        '59f1c0cf7d0b3d79de5f0421',
     ],
 },
 positList:{
@@ -259,6 +262,20 @@ containerList:{
 typeList:{
     'Spawn1':[
         RESOURCE_ZYNTHIUM,
+    ],
+},
+},
+
+repairer:{
+targetRoom:{
+    'Spawn1':[
+        'W42N33',
+        'W42N32',
+        'W41N32'
+    ],
+    'Spawn2':[
+        'W45N33',
+        'W45N32',
     ],
 },
 },
@@ -312,6 +329,11 @@ workList:{
     'Spawn2':[
         [
             '5b83ead1a6eaf86b80101301',
+            '5b840280f9ee417bc43a848c',
+            '5b8412b50d26b7566969a754',
+            '5b84064b37852f3d52e6c587',
+            '5b841577f86f4e0754d1e771',
+            "5b841bf6b2fa0416d2402468"
         ],
     ],
 },
@@ -326,6 +348,9 @@ positList:{
         W43N33:new RoomPosition(47,25,'W43N33'),
         W44N33:new RoomPosition(47,44,'W44N33'),
         W45N33:new RoomPosition(46,21,'W45N33'),
+    },
+    'Spawn2':{
+        W45N32:new RoomPosition(27,4,'W45N32'),
     },
 },
 },

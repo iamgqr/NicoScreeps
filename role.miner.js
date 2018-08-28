@@ -27,9 +27,9 @@ var roleMiner = {
             return;
         }
         
-        var tombstone = creep.pos.findInRange(FIND_TOMBSTONES,1,{filter:object=>object.store[type]});
-        if(tombstone[0]!=null&&_.sum(creep.carry)<creep.carryCapacity){
-            creep.withdraw(tombstone[0],type);
+        var tombstone = creep.pos.findClosestByRange(FIND_TOMBSTONES,{filter:object=>object.store[type]});
+        if(tombstone!=null&&_.sum(creep.carry)<creep.carryCapacity){
+            if(creep.withdraw(tombstone,type)==ERR_NOT_IN_RANGE) creep.moveTo(tombstone);
             return;
         }
         var resource = creep.pos.findInRange(FIND_DROPPED_RESOURCES,1,{filter:object=>object.resourceType==type});
@@ -44,7 +44,7 @@ var roleMiner = {
             {filter:object => object.owner.username=='iamgqr'&&object.memory.role=='minecart'&&!object.memory.working});
         var target=targets[0];
         if(target&&creep.carry.energy) {
-            creep.transfer(target,RESOURCE_ENERGY);
+            creep.transfer(target,type);
             //creep.moveTo(target, {visualizePathStyle: {stroke: '#ccff33'}});
         }
         

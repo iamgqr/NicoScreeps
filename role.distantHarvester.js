@@ -2,6 +2,8 @@ const consts = require('consts');
 const sourceList=consts.distantHarvester.sourceList;
 const positList=consts.distantHarvester.positList;
 const containerList=consts.distantHarvester.containerList;
+var findEnergy = require('function.findEnergy');
+var autoRenew = require('function.autoRenew');
 
 var roleDistantHarvester = {
 
@@ -43,9 +45,23 @@ var roleDistantHarvester = {
             else return -1;
         }
         */
-        
         if(creep.memory.behaviour>=3){
+            //if(autoRenew(creep)) return;
+            console.log(creep.name);
             if(creep.memory.working){
+                var target=creep.pos.findInRange(FIND_STRUCTURES,1,{filter:object=>object.structureType==STRUCTURE_CONTAINER})[0];//Game.getObjectById(containerList[creep.memory.spawn][creep.memory.behaviour]);
+                // console.log(creep.name,target);
+                if(target&&creep.carry.energy) {
+                    if(target.hits<5000){
+                        if(creep.carry.energy>25){
+                            creep.repair(target);
+                        }
+                        return;
+                    }
+                    creep.transfer(target,RESOURCE_ENERGY);
+                    //creep.moveTo(target, {visualizePathStyle: {stroke: '#ccff33'}});
+                    return;
+                }
                 var target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES,
                     {filter:site => site.owner.username=='iamgqr'});
                 if(target!=null) {
@@ -54,6 +70,11 @@ var roleDistantHarvester = {
                     }
                 }
                 return;
+            }
+            else{
+                if(creep.room.name=='W45N33'){
+                    if(findEnergy(creep)!=-1) return;
+                }
             }
         }
         creep.harvest(source);
@@ -75,6 +96,14 @@ var roleDistantHarvester = {
         // var targets = creep.pos.findInRange(FIND_CREEPS,1,
         //     {filter:object => object.owner.username=='iamgqr'&&object.memory.role=='minecart'&&!object.memory.working});
         
+        var target = creep.pos.findInRange(FIND_CONSTRUCTION_SITES,1,
+            {filter:site => site.owner.username=='iamgqr'})[0];
+        if(target!=null&&creep.carry.energy>=30) {
+            if(creep.build(target)==ERR_NOT_IN_RANGE){
+                creep.moveTo(target);
+            }
+        }
+        
         var targets = creep.pos.findInRange(FIND_CREEPS,1,
             {filter:object => object.owner.username=='iamgqr'&&object.memory.role=='minecart'&&!object.memory.working});
         var target=targets[0];
@@ -86,7 +115,7 @@ var roleDistantHarvester = {
         // var targets = creep.pos.findInRange(FIND_STRUCTURES,1,
         //     {filter:object => object.structureType==STRUCTURE_CONTAINER&&_.sum(object.store)<object.storeCapacity});
         // var target=targets[0];
-        var target=Game.getObjectById(containerList[creep.memory.spawn][creep.memory.behaviour]);
+        var target=creep.pos.findInRange(FIND_STRUCTURES,1,{filter:object=>object.structureType==STRUCTURE_CONTAINER})[0];//Game.getObjectById(containerList[creep.memory.spawn][creep.memory.behaviour]);
         // console.log(creep.name,target);
         if(target&&creep.carry.energy) {
             if(target.hits<5000){
@@ -99,7 +128,6 @@ var roleDistantHarvester = {
             //creep.moveTo(target, {visualizePathStyle: {stroke: '#ccff33'}});
             return;
         }
-        
         
         return 0;
 	}

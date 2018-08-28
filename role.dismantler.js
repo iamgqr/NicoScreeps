@@ -14,10 +14,10 @@ var roleDismantler={
 	        creep.memory.working = true;
 	        creep.say('⚡ transport');
 	    }
-        if(creep.room.name!='W42N33'){
-            creep.moveTo(new RoomPosition(22,22,'W42N33'));
-            return -2;
-        }
+        // if(creep.room.name!='W42N33'){
+        //     creep.moveTo(new RoomPosition(22,22,'W42N33'));
+        //     return -2;
+        // }
         var targets = _.map(Memory.dismantleList[0],Game.getObjectById);
         var target=_.filter(targets,object=>object.room.name==creep.room.name)[0];
         if(!target) return -1;

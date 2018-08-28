@@ -1,18 +1,20 @@
 const consts = require('consts');
 const template=consts.template;
+const maxSpawn=consts.maxSpawn;
 
 module.exports = function(creep){
+    //return;
+    if(creep.memory.behaviour>=maxSpawn[creep.memory.spawn][creep.memory.role]) return;
     if(!_.isEqual(_.map(creep.body,'type'),template[creep.memory.spawn][creep.memory.role][creep.memory.behaviour])) return;
+    if(Game.spawns[creep.memory.spawn].memory.lists[creep.memory.role]&&Game.spawns[creep.memory.spawn].memory.lists[creep.memory.role][creep.memory.behaviour]!=creep.name) return;
     var spawn = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-        filter: (structure) => {
-            var range=Game.map.getRoomLinearDistance(structure.room.name,creep.room.name)*50+Memory.constReactTime;
-            return (structure.structureType == STRUCTURE_SPAWN) &&
-                (!structure.spawning||structure.spawning.remainingTime<=range);
-        }
+        filter: structure => structure.structureType == STRUCTURE_SPAWN
     });
-    if(creep.ticksToLive<300||(Game.time-creep.memory.needRenew<=creep.body.length*2.2&&creep.ticksToLive<=1400)){
-        creep.say('🔄 renew')
-        if(spawn){
+    if(!spawn) return;
+    var range=Game.map.getRoomLinearDistance(spawn.room.name,creep.room.name)*50+Memory.constReactTime*2;
+    if(creep.ticksToLive<=range||(Game.time-creep.memory.needRenew<=creep.body.length*2&&creep.ticksToLive<=1500-Math.floor(600/creep.body.length))){
+        creep.say('🔄 renew');
+        if(!spawn.spawning||spawn.spawning.remainingTime<=range/2){
             if(!creep.pos.inRangeTo(spawn,4)){
                 creep.moveTo(spawn, {visualizePathStyle: {stroke: '#ffff66'}});
             }
@@ -34,7 +36,7 @@ module.exports = function(creep){
                 }
             }
         }
-        if(creep.ticksToLive<300) creep.memory.needRenew=Game.time;
+        if(creep.ticksToLive<100) creep.memory.needRenew=Game.time;
         return 1;
     }
     else{

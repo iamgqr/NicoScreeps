@@ -49,7 +49,7 @@ var autoSpawning = {
             if(id>=maxSpawn[role]||listCreep==null||Game.creeps[listCreep]==null) delete spawn.memory.lists[role][id];
         }
         if(spawn.spawning) {
-            spawn.spawning.setDirections([BOTTOM_RIGHT,BOTTOM_LEFT,TOP_LEFT,TOP_RIGHT]);
+            spawn.spawning.setDirections([BOTTOM_LEFT,BOTTOM_RIGHT,TOP_LEFT,TOP_RIGHT]);
             var spawningCreep = Game.creeps[spawn.spawning.name];
             spawn.room.visual.text(
                 '🛠️' 
@@ -62,11 +62,11 @@ var autoSpawning = {
                 spawn.pos.y + 1, 
                 {align: 'left', opacity: 0.8});
         }
-        if(spawn.memory.needRenew.time>=Game.time-1) return -9999;
+        
         if(!spawn.spawning) {
             //if(spawn.id=='5b78e5d6f79358042e76ff2e'){
                 if(this.spawnA(spawn,'harvester')!=undefined) return 0;
-                
+                if(spawn.memory.needRenew.time>=Game.time-1) return -9999;
                 if(this.spawnA(spawn,'supporter')!=undefined) return 1;
                 
                 if(this.spawnA(spawn,'carrier')!=undefined) return 2;
@@ -81,8 +81,8 @@ var autoSpawning = {
                     if(this.spawnA(spawn,'distantHarvester')!=undefined) return 6;
                 }
                 
-                if(_.filter(Game.creeps, (creep) => creep.memory.role == 'distantHarvester').length<maxSpawn['distantHarvester']||
-                   _.filter(Game.creeps, (creep) => creep.memory.role == 'minecart').length<maxSpawn['minecart'])
+                if(_.filter(Game.creeps, (creep) => creep.memory.role == 'distantHarvester').length<maxSpawn[spawn.name]['distantHarvester']||
+                   _.filter(Game.creeps, (creep) => creep.memory.role == 'minecart').length<maxSpawn[spawn.name]['minecart'])
                     return 6;
                 
                 //if(Math.random()>0.6) 
@@ -101,13 +101,14 @@ var autoSpawning = {
                 
                 var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
             
-                if(Math.random()>0.8) if(upgraders.length < 4) {
-                    var newName = 'Upgrader' + Game.time+'_'+spawn.name.substring(5);
-                    if(spawn.spawnCreep(template[spawn.name]['upgrader'], newName, 
-                        {memory: {role: 'upgrader',spawn:spawn.name,behaviour:Math.round(Math.random())}})==OK){
-                            console.log('Spawning new upgrader: ' + newName);
+                if(upgraders.length < maxSpawn[spawn.name][role]) {
+                    var beh=Math.round(Math.random());
+                    var newName = upperRole + Game.time+'_'+spawn.name.substring(5)+'-'+beh;
+                    if(spawn.spawnCreep(template[spawn.name][role][beh], newName, 
+                        {memory: {role: role,spawn:spawn.name,behaviour:beh}})==OK){
+                            console.log('Spawning new '+role+': ' + newName);
                         }
-                    return 10;
+                    return 0;
                 }
                 return 9999;
             /*}

@@ -79,17 +79,19 @@ module.exports.loop = function () {
         if(creep.memory.role == 'miner') {
             roleMiner.run(creep);
         }
+        //console.log(Game.time+" - creep "+name+" over, CPU="+Game.cpu.getUsed());
     }
     for(var name in Game.spawns) {
         var spawn=Game.spawns[name];
         if(spawn.room.name=='W42N33') visualTrack(spawn.room,true);
-        else visualTrack(spawn.room,false);
+        else visualTrack(spawn.room,true);
         var ret=autoSpawning.run(spawn);
         //console.log('Now at '+Game.time+' spawn '+spawn.name+' returned '+ret);
         if(ret<=3) continue;
-        autoVisualize.run(spawn);
+        // autoVisualize.run(spawn);
         autoReserve.run(spawn);
     }
+    //console.log(Game.time+" - Spawns over, CPU="+Game.cpu.getUsed());
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {
             console.log('Clearing non-existing creep memory:', name);
@@ -115,6 +117,7 @@ module.exports.loop = function () {
             autoLink.run(structure);
         }
     }
+    //console.log(""+Game.time+" - Structure over, CPU="+Game.cpu.getUsed());
     var visual=new RoomVisual;
     //Memory.reportCPU=Game.cpu.getUsed();
     Memory.reportCPU=Game.cpu.getUsed()*0.01+Memory.reportCPU*0.99;

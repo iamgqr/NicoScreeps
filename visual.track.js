@@ -1,6 +1,6 @@
 
 module.exports = function(room,visible){
-    if(!visible) return;
+    //if(!visible) return;
     var visual=new RoomVisual(room.name);
     var nArray=[];
     for(var x=0;x<=49;x++){

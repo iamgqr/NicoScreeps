@@ -19,6 +19,11 @@ module.exports = {
 	        creep.memory.working = true;
             creep.say('🔄 end');
 	    }
+	    if(type!=RESOURCE_ENERGY&& _.sum(creep.carry)&&creep.ticksToLive<30) {
+	        creep.memory.awaiting=false;
+	        creep.memory.working = true;
+            creep.say('🔄 end');
+	    }
 	    if(creep.memory.working){
 	        if(creep.pos.isEqualTo(end)){
                 var targets = creep.pos.findInRange(FIND_CREEPS,1,
@@ -54,11 +59,11 @@ module.exports = {
                 // }
                 var reuse=10,ignore=true;
                 if(creep.room.name=='W42N33'||creep.pos.inRangeTo(end,5)) reuse=5,ignore=false;
-                creep.moveTo(end,{ignoreCreeps:ignore,reusePath:reuse,plainCost:100,swampCost:200});
+                creep.moveTo(end,{ignoreCreeps:ignore,reusePath:reuse,plainCost:3,swampCost:20});
             }
 	    }
 	    else{
-	        if(creep.room.name=='W42N33') if(autoRenew(creep)) return;
+	        if(begin.roomName=='W42N33') if(autoRenew(creep)) return;
             var reuse=10;
             if(creep.room.name=='W42N33') reuse=2;
             if(!creep.pos.isEqualTo(begin))
@@ -69,11 +74,19 @@ module.exports = {
                     {filter:object => object.structureType==STRUCTURE_CONTAINER});
                 var source=sources[0];
                 if(source){
+                    if(type!='energy'){
+                        creep.drop('energy');
+                        if(source.store.energy) creep.withdraw(source,'energy');
+                    }
+                    // var resource = creep.pos.findInRange(FIND_DROPPED_RESOURCES,1,{filter:object=>object.resourceType==RESOURCE_ENERGY});
+                    // if(resource[0]!=null){
+                    //     creep.pickup(resource[0]);
+                    // }
                     creep.withdraw(source,type);
                     if(source.store.energy>=creep.carryCapacity-_.sum(creep.carry)){
                         var reuse=10,ignore=true;
                         if(creep.room.name=='W42N33') reuse=5,ignore=false;
-                        creep.moveTo(end,{ignoreCreeps:ignore,reusePath:reuse,plainCost:100,swampCost:200});
+                        creep.moveTo(end,{ignoreCreeps:ignore,reusePath:reuse,plainCost:3,swampCost:20});
                     }
                 }
 	        }

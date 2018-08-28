@@ -16,14 +16,14 @@ var roleBuilder = {
 	        creep.say('🚧 build');
 	    }
 	    
-        if(creep.room.name!='W42N33'){
-            creep.moveTo(new RoomPosition(22,22,'W42N33'));
-            return -2;
-        }
+        // if(creep.room.name!='W42N33'){
+        //     creep.moveTo(new RoomPosition(22,22,'W42N33'));
+        //     return -2;
+        // }
         var target;
         //if(creep.memory.behaviour==BEHAVIOUR_NEAREST){
             target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES,
-                {filter:site => site.owner.username=='iamgqr'});
+                {filter:site => site.my});
         // }
         // else if(creep.memory.behaviour==BEHAVIOUR_FIRST){
         //     var targets = creep.room.find(FIND_CONSTRUCTION_SITES,
