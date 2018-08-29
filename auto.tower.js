@@ -1,16 +1,9 @@
-/*
- * Module code goes here. Use 'module.exports' to export things:
- * module.exports.thing = 'a thing';
- *
- * You can import it from another modules like this:
- * var mod = require('auto.tower');
- * mod.thing == 'a thing'; // true
- */
+
  var findEnemy = require('function.findEnemy');
 
 module.exports = {
     run:function(tower){
-        if(!Game.spawns['Spawn1'].memory.towerEnergyLow&&tower.energy*3<tower.energyCapacity){
+        if(Game.spawns['Spawn1'].memory.towerEnergyLow<Game.time&&tower.energy*3<tower.energyCapacity){
             Game.spawns['Spawn1'].memory.towerEnergyLow=Game.time;
         }
         var target = findEnemy(tower);

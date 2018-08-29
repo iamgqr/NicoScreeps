@@ -2,9 +2,10 @@ const consts = require('consts');
 const template=consts.template;
 const maxSpawn=consts.maxSpawn;
 
-module.exports = function(creep){
+const profiler = require('screeps-profiler');
+var autoRenew=function(creep){
     //return;
-    if(creep.memory.behaviour>=maxSpawn[creep.memory.spawn][creep.memory.role]) return;
+    if(creep.memory.behaviour>=template[creep.memory.spawn][creep.memory.role].length) return;
     if(!_.isEqual(_.map(creep.body,'type'),template[creep.memory.spawn][creep.memory.role][creep.memory.behaviour])) return;
     if(Game.spawns[creep.memory.spawn].memory.lists[creep.memory.role]&&Game.spawns[creep.memory.spawn].memory.lists[creep.memory.role][creep.memory.behaviour]!=creep.name) return;
     var spawn = creep.pos.findClosestByRange(FIND_STRUCTURES, {
@@ -23,11 +24,19 @@ module.exports = function(creep){
                     if(!creep.pos.inRangeTo(spawn,1)) creep.moveTo(spawn, {visualizePathStyle: {stroke: '#ffff66'},reusePath:1});
                     spawn.renewCreep(creep);
                     var renewingCreepName = creep.name;
-                    spawn.room.visual.text(
-                        '🔄 ' + renewingCreepName,
-                        spawn.pos.x + 1, 
-                        spawn.pos.y-1, 
-                        {align: 'left', opacity: 0.8});
+                    if(spawn.pos.x>30){
+                        spawn.room.visual.text(
+                            renewingCreepName+' 🔄',
+                            spawn.pos.x - 1, 
+                            spawn.pos.y-1, 
+                            {align: 'right', opacity: 0.8});
+                    }else{
+                        spawn.room.visual.text(
+                            '🔄 ' + renewingCreepName,
+                            spawn.pos.x + 1, 
+                            spawn.pos.y-1, 
+                            {align: 'left', opacity: 0.8});
+                    }
                     spawn.memory.needRenew={time:Game.time,name:creep.name};
                 }
                 else if(spawn.memory.needRenew.time<Game.time-1){
@@ -43,3 +52,4 @@ module.exports = function(creep){
         if(creep.memory.needRenew) delete creep.memory.needRenew;
     }
 };
+module.exports = profiler.registerFN(autoRenew, 'autoRenew');

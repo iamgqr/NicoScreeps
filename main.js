@@ -18,7 +18,32 @@ var autoTower = require('auto.tower');
 var autoLink = require('auto.link');
 var visualTrack = require('visual.track');
 
+// Any modules that you use that modify the game's prototypes should be require'd
+// before you require the profiler.
+const profiler = require('screeps-profiler');
+
+// This line monkey patches the global prototypes.
+profiler.enable();
+profiler.registerClass(roleHarvester, 'roleHarvester');
+profiler.registerClass(roleDistantHarvester, 'roleDistantHarvester');
+profiler.registerClass(roleUpgrader, 'roleUpgrader');
+profiler.registerClass(roleBuilder, 'roleBuilder');
+profiler.registerClass(roleMinecart, 'roleMinecart');
+profiler.registerClass(roleRepairer, 'roleRepairer');
+profiler.registerClass(roleClaimer, 'roleClaimer');
+profiler.registerClass(roleDismantler, 'roleDismantler');
+profiler.registerClass(roleDefender, 'roleDefender');
+profiler.registerClass(roleVisualizer, 'roleVisualizer');
+profiler.registerClass(roleMiner, 'roleMiner');
+profiler.registerClass(autoSpawning, 'autoSpawning');
+profiler.registerClass(autoVisualize, 'autoVisualize');
+profiler.registerClass(autoReserve, 'autoReserve');
+profiler.registerClass(autoTower, 'autoTower');
+profiler.registerClass(autoLink, 'autoLink');
+profiler.registerClass(visualTrack, 'visualTrack');
+
 module.exports.loop = function () {
+profiler.wrap(function() {
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
         if(creep.memory.role == 'harvester') {
@@ -88,7 +113,7 @@ module.exports.loop = function () {
         var ret=autoSpawning.run(spawn);
         //console.log('Now at '+Game.time+' spawn '+spawn.name+' returned '+ret);
         if(ret<=3) continue;
-        // autoVisualize.run(spawn);
+        autoVisualize.run(spawn);
         autoReserve.run(spawn);
     }
     //console.log(Game.time+" - Spawns over, CPU="+Game.cpu.getUsed());
@@ -112,6 +137,13 @@ module.exports.loop = function () {
                     tpos++, 
                     {align: 'left', color:'#ee99cc', opacity: 0.6, font: '1 Consolas', stroke:'#992277', strokeWidth:'0.03'});
             }
+            if(structure.store.energy>=60000){
+                var nPos=new RoomPosition(22,29,structure.room.name);
+                if(nPos.lookFor(LOOK_CONSTRUCTION_SITES).length>0) continue;
+                if(nPos.lookFor(LOOK_STRUCTURES).length>0) nPos=new RoomPosition(20,29,structure.room.name);
+                if(nPos.lookFor(LOOK_STRUCTURES).length>0) continue;
+                nPos.createConstructionSite(STRUCTURE_LAB);
+            }
         }
         if(structure.structureType==STRUCTURE_LINK){
             autoLink.run(structure);
@@ -129,4 +161,5 @@ module.exports.loop = function () {
     if(Game.time%100==0){
         console.log('Currently average used cpu is:'+Memory.reportCPU);
     }
+});
 }

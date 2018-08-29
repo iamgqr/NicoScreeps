@@ -44,23 +44,36 @@ var autoSpawning = {
         // for(arr in spawn.memory.lists) if(maxSpawn[arr]&&spawn.memory.lists[arr].length>maxSpawn[arr]){
         //     spawn.memory.lists[arr]=_.slice(spawn.memory.lists[arr],0,maxSpawn[arr]);
         // }
-        for(var role in maxSpawn) if(spawn.memory.lists&&spawn.memory.lists[role]) for(var id=0;id<spawn.memory.lists[role].length;id++){
+        for(var role in maxSpawn[spawn.name]) if(spawn.memory.lists&&spawn.memory.lists[role]) for(var id in spawn.memory.lists[role]){
             const listCreep=spawn.memory.lists[role][id];
-            if(id>=maxSpawn[role]||listCreep==null||Game.creeps[listCreep]==null) delete spawn.memory.lists[role][id];
+            if(id>=maxSpawn[spawn.name][role]||listCreep==null||typeof listCreep=='string'&&Game.creeps[listCreep]==null) delete spawn.memory.lists[role][id];
         }
         if(spawn.spawning) {
-            spawn.spawning.setDirections([BOTTOM_LEFT,BOTTOM_RIGHT,TOP_LEFT,TOP_RIGHT]);
+            spawn.spawning.setDirections([BOTTOM,LEFT,BOTTOM_RIGHT,TOP_LEFT,TOP_RIGHT]);
             var spawningCreep = Game.creeps[spawn.spawning.name];
-            spawn.room.visual.text(
-                '🛠️' 
-                + spawningCreep.memory.role + '('+(100-Math.round((spawn.spawning.remainingTime-1)/spawn.spawning.needTime*100))+'%)',
-                spawn.pos.x + 1, 
-                spawn.pos.y, 
-                {align: 'left', opacity: 0.8}).text(
-                '📝️' + spawningCreep.name,
-                spawn.pos.x + 1, 
-                spawn.pos.y + 1, 
-                {align: 'left', opacity: 0.8});
+            if(spawn.pos.x>30){
+                spawn.room.visual.text(
+                    spawningCreep.memory.role + '('+(100-Math.round((spawn.spawning.remainingTime-1)/spawn.spawning.needTime*100))+'%)'
+                    +'🛠️' ,
+                    spawn.pos.x - 1, 
+                    spawn.pos.y, 
+                    {align: 'right', opacity: 0.8}).text(
+                    spawningCreep.name+'📝️',
+                    spawn.pos.x - 1, 
+                    spawn.pos.y + 1, 
+                    {align: 'right', opacity: 0.8});
+            }else{
+                spawn.room.visual.text(
+                    '🛠️' 
+                    + spawningCreep.memory.role + '('+(100-Math.round((spawn.spawning.remainingTime-1)/spawn.spawning.needTime*100))+'%)',
+                    spawn.pos.x + 1, 
+                    spawn.pos.y, 
+                    {align: 'left', opacity: 0.8}).text(
+                    '📝️' + spawningCreep.name,
+                    spawn.pos.x + 1, 
+                    spawn.pos.y + 1, 
+                    {align: 'left', opacity: 0.8});
+            }
         }
         
         if(!spawn.spawning) {
@@ -70,6 +83,7 @@ var autoSpawning = {
                 if(this.spawnA(spawn,'supporter')!=undefined) return 1;
                 
                 if(this.spawnA(spawn,'carrier')!=undefined) return 2;
+                
                 if(this.spawnB(spawn,'upgrader')!=undefined) return 3;
                 
                 if(this.spawnA(spawn,'dismantler')!=undefined) return 4;
@@ -81,9 +95,9 @@ var autoSpawning = {
                     if(this.spawnA(spawn,'distantHarvester')!=undefined) return 6;
                 }
                 
-                if(_.filter(Game.creeps, (creep) => creep.memory.role == 'distantHarvester').length<maxSpawn[spawn.name]['distantHarvester']||
-                   _.filter(Game.creeps, (creep) => creep.memory.role == 'minecart').length<maxSpawn[spawn.name]['minecart'])
-                    return 6;
+                // if(_.filter(Game.creeps, (creep) => creep.memory.role == 'distantHarvester').length<_.compact(template[spawn.name]['distantHarvester']).length||
+                //   _.filter(Game.creeps, (creep) => creep.memory.role == 'minecart').length<_.compact(template[spawn.name]['distantHarvester']).length)
+                //     return 6;
                 
                 //if(Math.random()>0.6) 
                 
@@ -96,20 +110,22 @@ var autoSpawning = {
                 if(Math.random()>0.3)
                     if(this.spawnB(spawn,'defender')!=undefined) return 9;
                 
-                if(this.spawnA(spawn,'miner')!=undefined) return 9;
+                if(!spawn.room.find(FIND_MINERALS)[0].ticksToRegeneration||spawn.room.find(FIND_MINERALS)[0].ticksToRegeneration<150)
+                    if(this.spawnA(spawn,'miner')!=undefined) return 9;
                 
-                
-                var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
+                // var role='upgrader';
+                // var upperRole=role.substr(0,1).toUpperCase()+role.substr(1);
+                // var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
             
-                if(upgraders.length < maxSpawn[spawn.name][role]) {
-                    var beh=Math.round(Math.random());
-                    var newName = upperRole + Game.time+'_'+spawn.name.substring(5)+'-'+beh;
-                    if(spawn.spawnCreep(template[spawn.name][role][beh], newName, 
-                        {memory: {role: role,spawn:spawn.name,behaviour:beh}})==OK){
-                            console.log('Spawning new '+role+': ' + newName);
-                        }
-                    return 0;
-                }
+                // if(upgraders.length < 5) {
+                //     var beh=Math.round(Math.random());
+                //     var newName = upperRole + Game.time+'_'+spawn.name.substring(5)+'-'+beh;
+                //     if(spawn.spawnCreep(template[spawn.name][role][beh], newName, 
+                //         {memory: {role: role,spawn:spawn.name,behaviour:beh}})==OK){
+                //             console.log('Spawning new '+role+': ' + newName);
+                //         }
+                //     return 0;
+                // }
                 return 9999;
             /*}
             else{

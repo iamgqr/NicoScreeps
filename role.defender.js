@@ -35,8 +35,11 @@ var roleDefender={
         if(creep.attack(target) !=OK) {
             if(creep.rangedAttack(target) !=OK)
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#ff00aa'},ignoreRoads:true,reusePath:0});
-            else
-                creep.moveTo(Game.spawns['Spawn1'], {visualizePathStyle: {stroke: '#ff00aa'},ignoreRoads:true,reusePath:1});
+            else{
+                creep.moveTo(creep.pos.findClosestByRange(FIND_STRUCTURES,{filter:object=>object.structureType==STRUCTURE_RAMPART})
+                    , {visualizePathStyle: {stroke: '#ff00aa'},ignoreRoads:true,reusePath:0});
+                //creep.moveTo(Game.spawns['Spawn1'], {visualizePathStyle: {stroke: '#ff00aa'},ignoreRoads:true,reusePath:1});
+            }
         }
         return 0;
         /*

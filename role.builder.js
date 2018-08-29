@@ -30,6 +30,9 @@ var roleBuilder = {
         //         {filter:site => site.owner.username=='iamgqr'});
         //     target=targets[0];
         // }
+        const avoidRoads=function(){
+            if(Math.random()<0.3) creep.move(Math.floor(Math.random()*8)+1);
+        }
 	    if(creep.memory.working){
             if(target!=null) {
                 if(creep.build(target) == ERR_NOT_IN_RANGE) {
@@ -38,6 +41,7 @@ var roleBuilder = {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#ccff33'},reusePath:reuse});
                     //38
                 }
+                else avoidRoads();
             }
             else return -1;
 	        /*

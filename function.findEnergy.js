@@ -1,5 +1,6 @@
+const profiler = require('screeps-profiler');
 
-module.exports = function(creep){
+var findEnergy = function(creep){
     var source = null;// creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
     var container= creep.pos.findClosestByRange(FIND_STRUCTURES,
         {filter:object => (//object.structureType==STRUCTURE_CONTAINER||
@@ -60,3 +61,5 @@ module.exports = function(creep){
     creep.moveTo(target, {visualizePathStyle: {stroke: '#ffaa00'},reusePath:reuse});
     return 1;
 };
+
+module.exports = profiler.registerFN(findEnergy, 'findEnergy');

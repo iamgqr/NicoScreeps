@@ -98,18 +98,13 @@ var roleDistantHarvester = {
         
         var target = creep.pos.findInRange(FIND_CONSTRUCTION_SITES,1,
             {filter:site => site.owner.username=='iamgqr'})[0];
-        if(target!=null&&creep.carry.energy>=30) {
-            if(creep.build(target)==ERR_NOT_IN_RANGE){
-                creep.moveTo(target);
+        if(target!=null) {
+            if(creep.carry.energy>=creep.getActiveBodyparts(WORK)*5){
+                if(creep.build(target)==ERR_NOT_IN_RANGE){
+                    creep.moveTo(target);
+                }
             }
-        }
-        
-        var targets = creep.pos.findInRange(FIND_CREEPS,1,
-            {filter:object => object.owner.username=='iamgqr'&&object.memory.role=='minecart'&&!object.memory.working});
-        var target=targets[0];
-        if(target&&creep.carry.energy) {
-            creep.transfer(target,RESOURCE_ENERGY);
-            //creep.moveTo(target, {visualizePathStyle: {stroke: '#ccff33'}});
+            return;
         }
         
         // var targets = creep.pos.findInRange(FIND_STRUCTURES,1,
@@ -118,8 +113,8 @@ var roleDistantHarvester = {
         var target=creep.pos.findInRange(FIND_STRUCTURES,1,{filter:object=>object.structureType==STRUCTURE_CONTAINER})[0];//Game.getObjectById(containerList[creep.memory.spawn][creep.memory.behaviour]);
         // console.log(creep.name,target);
         if(target&&creep.carry.energy) {
-            if(target.hits<5000){
-                if(creep.carry.energy>25){
+            if(target.hits<200000){
+                if(creep.carry.energy>=creep.getActiveBodyparts(WORK)*5){
                     creep.repair(target);
                 }
                 return;
@@ -128,6 +123,15 @@ var roleDistantHarvester = {
             //creep.moveTo(target, {visualizePathStyle: {stroke: '#ccff33'}});
             return;
         }
+        
+        var targets = creep.pos.findInRange(FIND_CREEPS,1,
+            {filter:object => object.my&&object.memory.role=='minecart'&&!object.memory.working});
+        var target=targets[0];
+        if(target&&creep.carry.energy) {
+            creep.transfer(target,RESOURCE_ENERGY);
+            //creep.moveTo(target, {visualizePathStyle: {stroke: '#ccff33'}});
+        }
+
         
         return 0;
 	}
