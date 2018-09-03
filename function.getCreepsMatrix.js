@@ -1,17 +1,19 @@
 const profiler = require('screeps-profiler');
 
 var getCreepsMatrix = function(roomName,ignoreCreeps=false){
+    if(!Game.rooms[roomName]) return new PathFinder.CostMatrix;
     if(!ignoreCreeps){
-        if(!Memory.matrixes.creeps[roomName]||Game.time-Memory.matrixes.creeps[roomName].time>=1){
+        if(!Game.rooms[roomName].memory.matrixes) Game.rooms[roomName].memory.matrixes={};
+        if(!Game.rooms[roomName].memory.matrixes.creeps||Game.time-Game.rooms[roomName].memory.matrixes.creeps.time>=1){
             var crp=new PathFinder.CostMatrix;
             var creeps=Game.rooms[roomName].find(FIND_CREEPS);
             for(i in creeps){
                 crp.set(creeps[i].pos.x,creeps[i].pos.y,255);
             }
-            Memory.matrixes.creeps[roomName]={time:Game.time,matrix:crp.serialize()};
+            Game.rooms[roomName].memory.matrixes.creeps={time:Game.time,matrix:crp.serialize()};
             return crp;
         }
-        else return PathFinder.CostMatrix.deserialize(Memory.matrixes.creeps[roomName].matrix);
+        else return PathFinder.CostMatrix.deserialize(Game.rooms[roomName].memory.matrixes.creeps.matrix);
     }
     else return new PathFinder.CostMatrix;
 };

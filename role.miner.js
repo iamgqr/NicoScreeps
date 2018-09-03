@@ -4,6 +4,8 @@ const positList=consts.miner.positList;
 const containerList=consts.miner.containerList;
 const typeList=consts.miner.typeList;
 
+var BTW = require('function.BTW');
+
 var roleMiner = {
 
     /** @param {Creep} creep **/
@@ -27,16 +29,8 @@ var roleMiner = {
             return;
         }
         
-        var tombstone = creep.pos.findClosestByRange(FIND_TOMBSTONES,{filter:object=>object.store[type]});
-        if(tombstone!=null&&_.sum(creep.carry)<creep.carryCapacity){
-            if(creep.withdraw(tombstone,type)==ERR_NOT_IN_RANGE) creep.moveTo(tombstone);
-            return;
-        }
-        var resource = creep.pos.findInRange(FIND_DROPPED_RESOURCES,1,{filter:object=>object.resourceType==type});
-        if(resource[0]!=null&&_.sum(creep.carry)<creep.carryCapacity){
-            creep.pickup(resource[0]);
-            return;
-        }
+        BTW(creep,type);
+        
         // var targets = creep.pos.findInRange(FIND_CREEPS,1,
         //     {filter:object => object.owner.username=='iamgqr'&&object.memory.role=='minecart'&&!object.memory.working});
         

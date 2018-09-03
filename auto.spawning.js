@@ -6,6 +6,7 @@ var autoSpawning = {
         if(spawn.memory.lists==undefined) spawn.memory.lists={};
         if(spawn.memory.lists[role]==undefined) spawn.memory.lists[role]={};
         const upperRole=role.substr(0,1).toUpperCase()+role.substr(1);
+        //console.log("SpawnA",spawn.name,role);
         for(var id=0;id<maxSpawn[spawn.name][role];id++){
             const listCreep=spawn.memory.lists[role][id];
             const Ntemplate=template[spawn.name][role][id];
@@ -16,8 +17,10 @@ var autoSpawning = {
                 +Memory.constReactTime+Ntemplate.length*3
                 ){
                 var newName = upperRole + Game.time+'_'+spawn.name.substring(5)+'-'+id;
-                if(spawn.spawnCreep(Ntemplate, newName, 
-                    {memory: {role: role,spawn:spawn.name,behaviour:id}})==OK){
+                var ret=spawn.spawnCreep(Ntemplate, newName, 
+                    {memory: {role: role,spawn:spawn.name,behaviour:id}});
+                //console.log(spawn.name,id,"return",ret);
+                if(ret==OK){
                         console.log('Spawning new '+upperRole+': ' + newName);
                         spawn.memory.lists[role][id]=newName;
                     }
@@ -90,9 +93,11 @@ var autoSpawning = {
                 
                 if(Math.random()<maxSpawn[spawn.name]['minecart']/(maxSpawn[spawn.name]['minecart']+maxSpawn[spawn.name]['distantHarvester'])){
                     if(this.spawnA(spawn,'minecart')!=undefined) return 5;
+                    else if(this.spawnA(spawn,'distantHarvester')!=undefined) return 6;
                 }
                 else{
                     if(this.spawnA(spawn,'distantHarvester')!=undefined) return 6;
+                    else if(this.spawnA(spawn,'minecart')!=undefined) return 5;
                 }
                 
                 // if(_.filter(Game.creeps, (creep) => creep.memory.role == 'distantHarvester').length<_.compact(template[spawn.name]['distantHarvester']).length||
@@ -111,7 +116,9 @@ var autoSpawning = {
                     if(this.spawnB(spawn,'defender')!=undefined) return 9;
                 
                 if(!spawn.room.find(FIND_MINERALS)[0].ticksToRegeneration||spawn.room.find(FIND_MINERALS)[0].ticksToRegeneration<150)
-                    if(this.spawnA(spawn,'miner')!=undefined) return 9;
+                    if(this.spawnA(spawn,'miner')!=undefined) return 10;
+                
+                if(this.spawnA(spawn,'dealer')!=undefined) return 10;
                 
                 // var role='upgrader';
                 // var upperRole=role.substr(0,1).toUpperCase()+role.substr(1);

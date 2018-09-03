@@ -2,6 +2,7 @@ const BEHAVIOUR_NEAREST=0;
 const BEHAVIOUR_FIRST=1;
 var findEnergy = require('function.findEnergy');
 var autoRenew = require('function.autoRenew');
+var avoidRoads = require('function.avoidRoads');
 
 var roleBuilder = {
 
@@ -30,9 +31,6 @@ var roleBuilder = {
         //         {filter:site => site.owner.username=='iamgqr'});
         //     target=targets[0];
         // }
-        const avoidRoads=function(){
-            if(Math.random()<0.3) creep.move(Math.floor(Math.random()*8)+1);
-        }
 	    if(creep.memory.working){
             if(target!=null) {
                 if(creep.build(target) == ERR_NOT_IN_RANGE) {
@@ -41,7 +39,7 @@ var roleBuilder = {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#ccff33'},reusePath:reuse});
                     //38
                 }
-                else avoidRoads();
+                else avoidRoads(creep);
             }
             else return -1;
 	        /*

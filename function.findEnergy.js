@@ -4,14 +4,15 @@ var findEnergy = function(creep){
     var source = null;// creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
     var container= creep.pos.findClosestByRange(FIND_STRUCTURES,
         {filter:object => (//object.structureType==STRUCTURE_CONTAINER||
-            object.structureType==STRUCTURE_STORAGE)&&object.store.energy*2>=creep.carryCapacity-_.sum(creep.carry)});
-    if(creep.room.find(FIND_STRUCTURES,{filter:object=>object.structureType==STRUCTURE_STORAGE}).length==0){
+        object.structureType==STRUCTURE_TERMINAL||
+            object.structureType==STRUCTURE_STORAGE)&&object.store.energy/*&&object.store.energy*2>=creep.carryCapacity-_.sum(creep.carry)*/});
+    if(creep.room.find(FIND_STRUCTURES,{filter:structure=>structure.structureType==STRUCTURE_STORAGE}).length==0||creep.room.name=='W45N33'){
         container= creep.pos.findClosestByRange(FIND_STRUCTURES,
-        {filter:object => (object.structureType==STRUCTURE_CONTAINER)&&object.store.energy});
+        {filter:object => (object.structureType==STRUCTURE_CONTAINER||object.structureType==STRUCTURE_STORAGE)&&object.store.energy*2>=creep.carryCapacity-_.sum(creep.carry)});
     }
-    if(creep.memory.role=='distantHarvester'&&creep.memory.behaviour==4){
-        source= creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
-        container=null;
+    if(creep.memory.role=='supporter'&&creep.memory.spawn=='Spawn2'){
+        container= creep.pos.findClosestByRange(FIND_STRUCTURES,
+        {filter:object => (object.structureType==STRUCTURE_CONTAINER||object.structureType==STRUCTURE_STORAGE)&&object.store.energy});
         //console.log(creep.name,source);
     }
     if(creep.memory.role=='upgrader'&&creep.memory.spawn=='Spawn2')
@@ -31,10 +32,10 @@ var findEnergy = function(creep){
         );
     var target=targets[0];
     if(target==null){
-        creep.move(Math.floor(Math.random()*8)+1);
+        if(Math.random()<0.3)creep.move(Math.floor(Math.random()*8)+1);
         return -1;
     }
-    if(target.deathTime!=null||target.structureType==STRUCTURE_CONTAINER||target.structureType==STRUCTURE_STORAGE||target.structureType==STRUCTURE_LINK){
+    if(target.deathTime!=null||target.structureType==STRUCTURE_CONTAINER||target.structureType==STRUCTURE_STORAGE||target.structureType==STRUCTURE_TERMINAL||target.structureType==STRUCTURE_LINK){
         //console.log(creep.name+' : Go to container/tombstone : ' + target.id);
         if(creep.withdraw(target,RESOURCE_ENERGY)!=ERR_NOT_IN_RANGE){
             if(target.store&&target.store.energy>=creep.carryCapacity-_.sum(creep.carry)) return 0;

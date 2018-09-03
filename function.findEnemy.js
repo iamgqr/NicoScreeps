@@ -1,8 +1,6 @@
-/*
- * MODULE function.findEnemy
- */
+const profiler = require('screeps-profiler');
 
-module.exports = function(creep){
+var findEnemy = function(creep){
     var pos=creep;
     if(pos.pos) pos=pos.pos;
     var target = pos.findClosestByRange(FIND_HOSTILE_CREEPS,{filter: object => Memory.whitelist.indexOf(object.owner.username)==-1});
@@ -11,3 +9,5 @@ module.exports = function(creep){
     if(target) Game.notify('Creep '+creep.name+' has been visited by '+target.owner.username+'\'s '+target.name+' at '+Game.time,60);
     return target;
 };
+
+module.exports = profiler.registerFN(findEnemy, 'findEnemy');

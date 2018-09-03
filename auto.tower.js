@@ -3,8 +3,8 @@
 
 module.exports = {
     run:function(tower){
-        if(Game.spawns['Spawn1'].memory.towerEnergyLow<Game.time&&tower.energy*3<tower.energyCapacity){
-            Game.spawns['Spawn1'].memory.towerEnergyLow=Game.time;
+        if((!tower.room.memory.towerEnergyLow||tower.room.memory.towerEnergyLow<Game.time)&&tower.energy*3<tower.energyCapacity){
+            tower.room.memory.towerEnergyLow=Game.time;
         }
         var target = findEnemy(tower);
         if(target) {
