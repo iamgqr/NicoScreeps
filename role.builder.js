@@ -8,14 +8,6 @@ var roleBuilder = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-	    if(creep.memory.working && creep.carry.energy == 0) {
-            creep.memory.working = false;
-            creep.say('🔄 harvest');
-	    }
-	    if(!creep.memory.working && creep.carry.energy == creep.carryCapacity) {
-	        creep.memory.working = true;
-	        creep.say('🚧 build');
-	    }
 	    
         // if(creep.room.name!='W42N33'){
         //     creep.moveTo(new RoomPosition(22,22,'W42N33'));
@@ -31,17 +23,23 @@ var roleBuilder = {
         //         {filter:site => site.owner.username=='iamgqr'});
         //     target=targets[0];
         // }
+        if(!target) return -1;
+	    if(creep.memory.working && creep.carry.energy == 0) {
+            creep.memory.working = false;
+            creep.say('🔄 harvest');
+	    }
+	    if(!creep.memory.working && creep.carry.energy == creep.carryCapacity) {
+	        creep.memory.working = true;
+	        creep.say('🚧 build');
+	    }
 	    if(creep.memory.working){
-            if(target!=null) {
-                if(creep.build(target) == ERR_NOT_IN_RANGE) {
-                    var reuse=6;
-                    if(creep.pos.inRangeTo(target,6)) reuse=0;
-                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ccff33'},reusePath:reuse});
-                    //38
-                }
-                else avoidRoads(creep);
+            if(creep.build(target) == ERR_NOT_IN_RANGE) {
+                var reuse=6;
+                if(creep.pos.inRangeTo(target,6)) reuse=0;
+                creep.moveTo(target, {visualizePathStyle: {stroke: '#ccff33'},reusePath:reuse,range:3});
+                //38
             }
-            else return -1;
+            else avoidRoads(creep);
 	        /*
                 var target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES,{filter:site => site.owner.username=='iamgqr'});
                 if(target) {
@@ -56,7 +54,7 @@ var roleBuilder = {
 	    else{
             if(autoRenew(creep)) return;
             if(findEnergy(creep)==0){
-                creep.moveTo(target, {visualizePathStyle: {stroke: '#ccff33'}});
+                creep.moveTo(target, {visualizePathStyle: {stroke: '#ccff33'},range:3});
             }
             /*target=Game.getObjectById('5b798bf04602265638d1761b');
             if(creep.withdraw(target,RESOURCE_ENERGY)==ERR_NOT_IN_RANGE){

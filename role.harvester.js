@@ -1,7 +1,6 @@
 const consts = require('consts');
-const sourceList=consts.harvester.sourceList;
-const positList=consts.harvester.positList;
 var BTW = require('function.BTW');
+const profiler = require('screeps-profiler');
 
 var roleHarvester = {
 
@@ -22,20 +21,17 @@ var roleHarvester = {
         // }
         
         BTW(creep);
-        var source=Game.getObjectById(sourceList[creep.memory.spawn][creep.memory.behaviour]);
-        var target = creep.pos.findInRange(FIND_STRUCTURES,1, {
-                filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) &&
-                        _.sum(structure.store) < structure.storeCapacity;
-                }
-        })[0];
-        var link = creep.pos.findInRange(FIND_STRUCTURES,1, {
-                filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_LINK) &&
-                        structure.energy < structure.energyCapacity;
-                }
-        })[0];
-        if(link!=null&&Math.random()<1) target=link;
+        var posit;
+        var flag_posit=Game.flags['harvester_'+creep.memory.spawn.substring(5)+'-'+creep.memory.behaviour];
+        if(flag_posit)
+            posit=flag_posit.pos;
+        var source;
+        if(!creep.memory.sourceId){
+            if(posit&&Game.rooms[posit.roomName]) source=posit.findInRange(FIND_SOURCES,1)[0];
+            creep.memory.sourceId=source.id;
+        }
+        else source=Game.getObjectById(creep.memory.sourceId);
+        
         //if(creep.memory.working) {
             /*
             var targets = creep.room.find(FIND_STRUCTURES, {
@@ -57,22 +53,48 @@ var roleHarvester = {
             }
             else return -1;*/
         //}
-        if(!creep.pos.isEqualTo(positList[creep.memory.spawn][creep.memory.behaviour])){
-            creep.moveTo(positList[creep.memory.spawn][creep.memory.behaviour], {ignoreCreeps:true,reusePath:20,plainCost:4,swampCost:20,visualizePathStyle: {stroke: '#ffaa00'}});
+        if(!creep.pos.isEqualTo(posit)){
+            creep.moveTo(posit, {ignoreCreeps:true,reusePath:20,plainCost:4,swampCost:20,visualizePathStyle: {stroke: '#ffaa00'}});
             return;
         }
-        if(source==null) return -1;
-        creep.harvest(source);
-        if(target) {
-            var amount=Math.floor(creep.carry.energy/(creep.getActiveBodyparts(WORK)*6))*creep.getActiveBodyparts(WORK)*6;
-            if(amount!=0) {
-                creep.transfer(target, RESOURCE_ENERGY, amount);
-            }
+        var ret=creep.harvest(source);
+        if(ret!=OK){
+            delete creep.memory.sourceId;
+            return -1;
         }
         
+        var target;
+        if(!creep.memory.targetId){
+            target = creep.pos.findInRange(FIND_STRUCTURES,1, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_LINK) &&
+                            structure.energy < structure.energyCapacity;
+                    }
+            })[0];
+            if(!target) target = creep.pos.findInRange(FIND_STRUCTURES,1, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) &&
+                            _.sum(structure.store) < structure.storeCapacity;
+                    }
+            })[0];
+            if(!target) return;
+            creep.memory.targetId=target.id;
+        }
+        else target=Game.getObjectById(creep.memory.targetId);
+        
+        if(target) {
+            var amount=Math.floor(creep.carry.energy/(creep.getActiveBodyparts(WORK)*6))*creep.getActiveBodyparts(WORK)*6;
+            if(amount) {
+                var ret=creep.transfer(target, RESOURCE_ENERGY, amount);
+                if(ret==OK) return 0;
+            }
+            else return 0;
+        }
+        delete creep.memory.targetId;
+        
         //var resource = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
-        return 0;
+        return -1;
 	}
 };
-
+profiler.registerClass(roleHarvester, 'harvester');
 module.exports = roleHarvester;

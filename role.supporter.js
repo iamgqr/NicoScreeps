@@ -5,9 +5,11 @@ const swampCost=consts.supporter.swampCost;
 var findEnergy = require('function.findEnergy');
 var autoRenew = require('function.autoRenew');
 var avoidRoads = require('function.avoidRoads');
+var BTW = require('function.BTW');
 
 var getCreepsMatrix = require('function.getCreepsMatrix');
 var getStructuresMatrix = require('function.getStructuresMatrix');
+var roleRepairer = require('role.repairer');
 
 const profiler = require('screeps-profiler');
 
@@ -68,7 +70,7 @@ var roleSupporter = {
                     visual.text(matrix.get(x,y).toString(),x,y,{color:'green',font:0.4,opacity:0.5});
                 }
                 if(matrix.get(x,y)==255) continue;
-                matrix.set(x,y,Math.max(1,Math.ceil(((currTerrain=='swamp'&&matrix.get(x,y)==0)?swampCost:plainCost)*(2-matrix.get(x,y))/(cnt.get(x,y)+1))));
+                matrix.set(x,y,Math.max(1,Math.ceil(((currTerrain=='swamp'&&matrix.get(x,y)==0)?swampCost:plainCost)*(3-2*matrix.get(x,y))/(cnt.get(x,y)+1))));
             }
             return matrix;
         }
@@ -80,7 +82,7 @@ var roleSupporter = {
         var ignoreCreeps=false;
         if(!targets) targets=this.findTarget(creep);
         var target;
-        if(!creep.memory.targetId||Game.time%20==0||Game.getObjectById(creep.memory.targetId).energy==Game.getObjectById(creep.memory.targetId).energyCapacity){
+        if(!creep.memory.targetId||Game.time%5==0||Game.getObjectById(creep.memory.targetId).energy==Game.getObjectById(creep.memory.targetId).energyCapacity){
             target=creep.pos.findClosestByRange(targets);
             if(target) creep.memory.targetId=target.id;
             else delete creep.memory.targetId;
@@ -146,8 +148,13 @@ var roleSupporter = {
             return 0;
         }
         else{
-            avoidRoads(creep);
-            return -1;
+            if(!creep.getActiveBodyparts(WORK)){
+                avoidRoads(creep);
+                return -1;
+            }
+            else{
+                return roleRepairer.moveWork(creep,'supporter');
+            }
         }
         return 0;
         //console.log(Game.time+" - creep "+creep.name+" D, CPU="+Game.cpu.getUsed());
@@ -158,6 +165,8 @@ var roleSupporter = {
             this.toggleStatus(creep,false);
 	    if(creep.carry.energy == creep.carryCapacity)
             this.toggleStatus(creep,true);
+            
+        BTW(creep);
         //console.log(creep.name,'|');
 /*
         if(creep.room.name!='W42N33'){

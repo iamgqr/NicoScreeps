@@ -6,17 +6,17 @@ var findEnergy = function(creep){
         {filter:object => (//object.structureType==STRUCTURE_CONTAINER||
         object.structureType==STRUCTURE_TERMINAL||
             object.structureType==STRUCTURE_STORAGE)&&object.store.energy/*&&object.store.energy*2>=creep.carryCapacity-_.sum(creep.carry)*/});
-    if(creep.room.find(FIND_STRUCTURES,{filter:structure=>structure.structureType==STRUCTURE_STORAGE}).length==0||creep.room.name=='W45N33'){
-        container= creep.pos.findClosestByRange(FIND_STRUCTURES,
-        {filter:object => (object.structureType==STRUCTURE_CONTAINER||object.structureType==STRUCTURE_STORAGE)&&object.store.energy*2>=creep.carryCapacity-_.sum(creep.carry)});
-    }
-    if(creep.memory.role=='supporter'&&creep.memory.spawn=='Spawn2'){
-        container= creep.pos.findClosestByRange(FIND_STRUCTURES,
-        {filter:object => (object.structureType==STRUCTURE_CONTAINER||object.structureType==STRUCTURE_STORAGE)&&object.store.energy});
-        //console.log(creep.name,source);
-    }
-    if(creep.memory.role=='upgrader'&&creep.memory.spawn=='Spawn2')
-        source= creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+    // if(creep.room.find(FIND_STRUCTURES,{filter:structure=>structure.structureType==STRUCTURE_STORAGE}).length==0||creep.room.name=='W45N33'){
+    //     container= creep.pos.findClosestByRange(FIND_STRUCTURES,
+    //     {filter:object => (object.structureType==STRUCTURE_CONTAINER||object.structureType==STRUCTURE_STORAGE)&&object.store.energy*2>=creep.carryCapacity-_.sum(creep.carry)});
+    // }
+    // if(creep.memory.role=='supporter'&&creep.memory.spawn=='Spawn2'){
+    //     container= creep.pos.findClosestByRange(FIND_STRUCTURES,
+    //     {filter:object => (object.structureType==STRUCTURE_CONTAINER||object.structureType==STRUCTURE_STORAGE)&&object.store.energy});
+    //     //console.log(creep.name,source);
+    // }
+    // if(creep.memory.role=='upgrader'&&creep.memory.spawn=='Spawn2')
+    //     source= creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
     
     var link = creep.pos.findInRange(FIND_STRUCTURES,3,
         {filter:object => object.structureType==STRUCTURE_LINK&&object.energy})[0];

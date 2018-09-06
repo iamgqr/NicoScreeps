@@ -12,12 +12,14 @@ var roleVisualizer = require('role.visualizer');
 var roleMiner = require('role.miner');
 var roleBattleGroup = require('role.battleGroup');
 var roleDealer = require('role.dealer');
+var roleHunter = require('role.hunter');
 var autoSpawning = require('auto.spawning');
 var autoVisualize = require('auto.visualize');
 var autoReserve = require('auto.reserve');
 var autoTower = require('auto.tower');
 var autoLink = require('auto.link');
 var autoBattleGroup = require('auto.battleGroup');
+var autoHunt = require('auto.hunt');
 var visualTrack = require('visual.track');
 
 // Any modules that you use that modify the game's prototypes should be require'd
@@ -26,19 +28,18 @@ const profiler = require('screeps-profiler');
 
 // This line monkey patches the global prototypes.
 profiler.enable();
-profiler.registerClass(roleHarvester, 'roleHarvester');
-profiler.registerClass(roleDistantHarvester, 'roleDistantHarvester');
-profiler.registerClass(roleUpgrader, 'roleUpgrader');
-profiler.registerClass(roleBuilder, 'roleBuilder');
-profiler.registerClass(roleRepairer, 'roleRepairer');
-profiler.registerClass(roleClaimer, 'roleClaimer');
-profiler.registerClass(roleDismantler, 'roleDismantler');
-profiler.registerClass(roleDefender, 'roleDefender');
-profiler.registerClass(roleVisualizer, 'roleVisualizer');
-profiler.registerClass(roleMiner, 'roleMiner');
-profiler.registerClass(roleBattleGroup, 'roleBattleGroup');
-profiler.registerClass(roleDealer, 'roleDealer');
-profiler.registerClass(autoSpawning, 'autoSpawning');
+
+profiler.registerClass(roleBuilder, 'builder');
+profiler.registerClass(roleRepairer, 'repairer');
+profiler.registerClass(roleClaimer, 'claimer');
+profiler.registerClass(roleDismantler, 'dismantler');
+profiler.registerClass(roleDefender, 'defender');
+profiler.registerClass(roleVisualizer, 'visualizer');
+profiler.registerClass(roleMiner, 'miner');
+profiler.registerClass(roleBattleGroup, 'battleGroup');
+profiler.registerClass(roleDealer, 'dealer');
+profiler.registerClass(roleHunter, 'hunter');
+profiler.registerClass(autoSpawning, 'spawning');
 profiler.registerClass(autoVisualize, 'autoVisualize');
 profiler.registerClass(autoReserve, 'autoReserve');
 profiler.registerClass(autoTower, 'autoTower');
@@ -93,17 +94,17 @@ profiler.wrap(function() {
         }
         if(creep.memory.role == 'defender') {
             if(roleDefender.run(creep)==-1){
-            if(creep.memory.behaviour == 0){
-                    if(roleBuilder.run(creep)==-1){
-                        roleRepairer.run(creep);
-                    }
-                }
-                else{
+                // if(creep.memory.behaviour == 0){
+                //     if(roleBuilder.run(creep)==-1){
+                //         roleRepairer.run(creep);
+                //     }
+                // }
+                // else{
                     if(roleBuilder.run(creep)==-1){
                         //creep.memory.behaviour=0;
                         roleUpgrader.run(creep);
                     }
-                }
+                // }
             }
         }
         if(creep.memory.role == 'dismantler') {
@@ -122,6 +123,9 @@ profiler.wrap(function() {
         if(creep.memory.role == 'dealer') {
             roleDealer.run(creep);
         }
+        if(creep.memory.role == 'hunter') {
+            roleHunter.run(creep);
+        }
         //console.log(Game.time+" - creep "+name+" over, CPU="+Game.cpu.getUsed());
     }
     for(var name in Game.spawns) {
@@ -129,11 +133,12 @@ profiler.wrap(function() {
         if(spawn.room.name=='W42N33') visualTrack(spawn.room,true);
         else visualTrack(spawn.room,true);
         //autoBattleGroup.run(spawn);
+        autoVisualize.run(spawn);
         var ret=autoSpawning.run(spawn);
         //console.log('Now at '+Game.time+' spawn '+spawn.name+' returned '+ret);
         if(ret<=3) continue;
-        autoVisualize.run(spawn);
         autoReserve.run(spawn);
+        autoHunt.run(spawn);
     }
     //console.log(Game.time+" - Spawns over, CPU="+Game.cpu.getUsed());
     if(Game.time%100==0)for(var name in Memory.creeps) {
@@ -148,13 +153,13 @@ profiler.wrap(function() {
             autoTower.run(structure);
         }
         if(structure.structureType==STRUCTURE_STORAGE){
-            var tpos=structure.pos.y-1;
+            var tpos=structure.pos.y-1.6;
             for(i in structure.store){
                 structure.room.visual.text(
                     i + ':'+structure.store[i],
                     structure.pos.x + 1, 
-                    tpos++, 
-                    {align: 'left', color:'#ee99cc', opacity: 0.6, font: '1 Consolas', stroke:'#992277', strokeWidth:'0.03'});
+                    tpos+=0.8, 
+                    {align: 'left', color:'#ee99cc', opacity: 0.6, font: '.8 Consolas', stroke:'#992277', strokeWidth:'0.08'});
             }
         }
         if(structure.structureType==STRUCTURE_LINK){

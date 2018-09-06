@@ -14,8 +14,8 @@ var sigmoid=function(a,b,c){
 }
 var roleRepairer= {
     getValue:creep => a =>
-        a.hits-sigmoid(Math.max(Math.abs(a.pos.x-creep.pos.x),Math.abs(a.pos.y-creep.pos.y))+
-        0.1*Math.min(Math.abs(a.pos.x-creep.pos.x),Math.abs(a.pos.y-creep.pos.y)),6.0,1.0)*3000
+        a?(a.hits-sigmoid(Math.max(Math.abs(a.pos.x-creep.pos.x),Math.abs(a.pos.y-creep.pos.y))+
+        0.1*Math.min(Math.abs(a.pos.x-creep.pos.x),Math.abs(a.pos.y-creep.pos.y)),6.0,1.0)*3000):525252525
     ,
     toggleStatus:function(creep,working){
         if(creep.memory.working!=working){
@@ -23,24 +23,65 @@ var roleRepairer= {
             creep.say(working?'🔧 repair':'🔄 harvest');
         }
     },
-    findTarget:function(creep){
-        if(!creep.memory.targetList||Game.time%50==0){
+    findTarget:function(creep,role){
+        if(!creep.memory.repairerTargetList||Game.time%50==0){
             var targets;
-            if(creep.room.find(FIND_STRUCTURES,{filter:object=>object.structureType==STRUCTURE_TOWER}).length!=0)
-                targets = creep.room.find(FIND_STRUCTURES, {
-                    filter: object => object.hits+300 < object.hitsMax && (!object.owner||object.my) && Memory.dismantleList.indexOf(object.id)==-1
-                    &&object.structureType!=STRUCTURE_ROAD&&object.structureType!=STRUCTURE_CONTAINER
-                });
-            else
+            if(creep.room.find(FIND_STRUCTURES,{filter:object=>object.structureType==STRUCTURE_TOWER}).length==0){
                 targets = creep.room.find(FIND_STRUCTURES, {
                     filter: object => object.hits+300 < object.hitsMax && (!object.owner||object.my) && Memory.dismantleList.indexOf(object.id)==-1
                     //&&object.structureType!=STRUCTURE_ROAD&&object.structureType!=STRUCTURE_CONTAINER
-                })
+                });
+            }
+            else if(role=='supporter'){
+                targets = creep.room.find(FIND_STRUCTURES, {
+                    filter: object => object.hits+300 < object.hitsMax && (!object.owner||object.my) && Memory.dismantleList.indexOf(object.id)==-1
+                    &&object.structureType!=STRUCTURE_ROAD&&object.structureType!=STRUCTURE_CONTAINER&&object.pos.findInRange(FIND_STRUCTURES,1, {
+                        filter: object => object.structureType==STRUCTURE_EXTENSION||object.structureType==STRUCTURE_SPAWN}).length!=0
+                });
+            }
+            else{
+                targets = creep.room.find(FIND_STRUCTURES, {
+                    filter: object => object.hits+300 < object.hitsMax && (!object.owner||object.my) && Memory.dismantleList.indexOf(object.id)==-1
+                    &&object.structureType!=STRUCTURE_ROAD&&object.structureType!=STRUCTURE_CONTAINER&&object.pos.findInRange(FIND_STRUCTURES,1, {
+                        filter: object => object.structureType==STRUCTURE_EXTENSION||object.structureType==STRUCTURE_SPAWN}).length==0
+                });
+            }
             targets=_.slice(_.sortBy(targets,this.getValue(creep),this),0,8);
-            creep.memory.targetList=_.map(targets,"id");
+            creep.memory.repairerTargetList=_.map(targets,"id");
             return targets;
         }
-        else return _.map(creep.memory.targetList,Game.getObjectById);
+        else return _.map(creep.memory.repairerTargetList,Game.getObjectById);
+    },
+    moveWork:function(creep,role='repairer'){
+        if(Game.time-creep.room.memory.towerEnergyLow<20){
+	        var towers = creep.room.find(FIND_MY_STRUCTURES, {
+                filter: object => object.structureType==STRUCTURE_TOWER&&object.energy*4<object.energyCapacity*3
+            });
+            if(towers.length){
+                if(creep.transfer(towers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(towers[0], {visualizePathStyle: {stroke: '#00aaff'},range:1});
+                }
+                return 0;
+            }
+        }
+        
+        var targets=this.findTarget(creep,role);
+        var target=_.min(targets,this.getValue(creep),this);
+        //console.log(creep.name,targets[0]);
+        if(target) {
+            var ret=creep.repair(target);
+            if(ret == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target, {visualizePathStyle: {stroke: '#00aaff'},reusePath:5,ignoreRoads:false,range:3});
+                return;
+            }
+            if(ret==OK){
+                avoidRoads(creep);
+            }
+            return;
+        }
+        else{
+            return -1;
+        }
     },
     run: function(creep) {
         //var behaviourDistant=creep.memory.behaviour>=1&&creep.memory.spawn=='Spawn1';
@@ -72,45 +113,12 @@ var roleRepairer= {
         }
         
 	    if(creep.memory.working) {
-	        var targets=this.findTarget(creep);
-            if(setRoom(creep,targetRoom[creep.memory.spawn][creep.memory.behaviour])==0) return;
-
-            if(Game.time-creep.room.memory.towerEnergyLow<20){
-    	        var towers = creep.room.find(FIND_MY_STRUCTURES, {
-                    filter: object => object.structureType==STRUCTURE_TOWER&&object.energy*4<object.energyCapacity*3
-                });
-                if(towers.length){
-                    if(creep.transfer(towers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(towers[0], {visualizePathStyle: {stroke: '#00aaff'}});
-                    }
-                    return 0;
-                }
-            }
-            
-            var target=_.min(targets,this.getValue(creep),this);
-            //console.log(creep.name,targets[0]);
-            if(target) {
-                var ret=creep.repair(target);
-                if(ret == ERR_NOT_IN_RANGE) {
-                    var crp = creep.pos.findInRange(FIND_CREEPS,2,
-                        {filter:object => object.my&&object.memory.role=='minecart'})[0];
-                    var reuse=5;
-                    if(crp) reuse=0;
-                    creep.moveTo(target, {visualizePathStyle: {stroke: '#00aaff'},reusePath:reuse,ignoreRoads:false});
-                    return;
-                }
-                if(ret==OK){
-                    avoidRoads(creep);
-                }
-                return;
-            }
-            else{
-                return -1;
-            }
+	        if(setRoom(creep,targetRoom[creep.memory.spawn][creep.memory.behaviour])==0) return;
+	        return this.moveWork(creep);
 	    }
 	    else {
 	        if(autoRenew(creep)) return;
-	        delete creep.memory.targetList;
+	        delete creep.memory.repairerTargetList;
 	        var ret=findEnergy(creep);
             if(ret==0){
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#00aaff'}});

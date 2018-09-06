@@ -11,17 +11,17 @@ var roleClaimer = {
         
         const target = creep.room.controller;
         if(target) {
-            if(target.owner){
+            if(target.owner&&!target.my){
                 var ret=creep.attackController(target);
                 if(ret == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ff00aa'},reusePath:20});
+                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ff00aa'},reusePath:20,ignoreRoads:true});
                     return;
                 }
                 else if(ret==OK) return;
             }
             var ret=creep.reserveController(target);
             if(ret == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target, {visualizePathStyle: {stroke: '#ff00aa'},reusePath:20});
+                creep.moveTo(target, {visualizePathStyle: {stroke: '#ff00aa'},reusePath:20,ignoreRoads:true});
             }
             else if(!creep.room.controller.sign||creep.room.controller.sign.username!='iamgqr') creep.signController(creep.room.controller,NicoMsg);
         }

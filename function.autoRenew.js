@@ -15,12 +15,14 @@ var autoRenew=function(creep){
     }
     var spawn = Game.spawns[creep.memory.spawn];
     if(!spawn) return;
+    if(spawn.spawning&&spawn.spawning.remainingTime>creep.ticksToLive) return;
     if(creep.room.name!=spawn.room.name) return;
     var range=Game.map.getRoomLinearDistance(spawn.room.name,creep.room.name)*50+Memory.constReactTime*2+template[creep.memory.spawn][creep.memory.role][creep.memory.behaviour].length*3;
     if(creep.ticksToLive<=range||(Game.time-creep.memory.needRenew<=creep.body.length*2&&creep.ticksToLive<=1500-Math.floor(600/creep.body.length))){
         //console.log(creep.name,'A');
         if(creep.ticksToLive<=range) creep.memory.needRenew=Game.time;
         creep.say('🔄 renew');
+        
         if(!spawn.spawning||spawn.spawning.remainingTime<=range*1.2){
             //console.log(creep.name,'B');
             if(!creep.pos.inRangeTo(spawn,4)){

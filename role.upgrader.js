@@ -1,5 +1,7 @@
 var findEnergy = require('function.findEnergy');
 var autoRenew = require('function.autoRenew');
+const profiler = require('screeps-profiler');
+
 var roleUpgrader = {
 
     /** @param {Creep} creep **/
@@ -31,18 +33,20 @@ var roleUpgrader = {
 	       //     return;
 	       // }
             creep.upgradeController(target);
+            //console.log(creep.name,creep.carry.energy,creep.getActiveBodyparts(WORK));
+            if(creep.carry.energy<=creep.getActiveBodyparts(WORK)){
+                if(findEnergy(creep)==0) return;
+            }
             var reuse=20;
             if(creep.pos.inRangeTo(target,4)) reuse=0;
-            //if(creep.room.name!='W42N33'&&creep.pos.inRangeTo(creep.room.controller,1)) return;
-            if(creep.pos.inRangeTo(target,3)) return;
-            creep.moveTo(target, {visualizePathStyle: {stroke: '#ff00aa'},reusePath:reuse});
+            creep.moveTo(target, {visualizePathStyle: {stroke: '#ff00aa'},reusePath:reuse,range:3});
         }
         else {
 	       // if(creep.memory.behaviour==1&&creep.room.name=='W42N32'){
 	       //     creep.moveTo(new RoomPosition(22,22,'W42N33'));
 	       //     return;
 	       // }
-            if(autoRenew(creep)) return;
+            //if(autoRenew(creep)) return;
             if(findEnergy(creep)==0){
                 var reuse=20;
                 if(creep.pos.inRangeTo(target,4)) reuse=0;
@@ -53,4 +57,5 @@ var roleUpgrader = {
 	}
 };
 
+profiler.registerClass(roleUpgrader, 'upgrader');
 module.exports = roleUpgrader;
